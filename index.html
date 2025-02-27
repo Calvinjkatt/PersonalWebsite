@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Portfolio</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/tabs.css" />
+    <script src="js/main.js" defer></script>
+  </head>
+  <body>
+    <nav class="nav-tabs">
+      <span class="nav-name">Calvin Kattathara</span>
+      <button class="tab-btn active" data-tab="home">Home</button>
+      <button class="tab-btn" data-tab="about">About Me</button>
+      <button class="tab-btn" data-tab="career">Career & Education</button>
+      <button class="tab-btn" data-tab="projects">Projects</button>
+      <button class="tab-btn" data-tab="resume">Resume</button>
+    </nav>
+
+    <main>
+      <!-- Home Tab -->
+      <section id="home" class="tab-content active">
+        <div class="profile-container">
+          <img src="me.jpg" alt="Professional Photo" class="profile-photo" />
+          <h1>Calvin Kattathara</h1>
+          <p class="tagline">Software Developer & Computer Science Student</p>
+          <div class="social-links">
+            <a
+              href="https://www.linkedin.com/in/calvin-k-2502a5261/"
+              target="_blank"
+              >LinkedIn</a
+            >
+            <a href="https://github.com/Calvinjkatt" target="_blank">GitHub</a>
+          </div>
+        </div>
+      </section>
+      <!-- About Tab -->
+      <section id="about" class="tab-content">
+        <h2>About Me</h2>
+        <div class="bio">
+          <!-- Left Image -->
+          <div class="bio-image left">
+            <img src="coder.jpg" alt="Profile Picture" />
+          </div>
+
+          <div class="bio-content">
+            <p>Pleasure to introduce myself! I'm Calvin Kattathara.</p>
+            <p>
+              I'm a 4th-year Computer Science student at York University with a
+              passion for software development, full-stack engineering, and
+              machine learning/AI. Over the years, I've been constantly
+              learning, adapting, and honing my skills as a software
+              developer—always striving to improve and be the best I can.
+            </p>
+            <p>
+              My journey into Computer Science was heavily influenced by my love
+              for video games and anime, both of which sparked my curiosity
+              about how technology works. That curiosity turned into a drive to
+              build and create, leading me to explore everything from AI-powered
+              applications to full-stack development.
+            </p>
+            <p>
+              Outside of coding, I'm deeply interested in sports, gaming, and
+              anime. Whether it's playing, watching, or discussing them, these
+              interests have played a huge role in shaping who I am today.
+            </p>
+          </div>
+
+          <!-- Right Image -->
+          <div class="bio-image right">
+            <img src="Hobbies.jpg" alt="Coding Illustration" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Career Tab -->
+      <section id="career" class="tab-content">
+        <h2>Career & Education</h2>
+        <div class="timeline">
+          <!-- Work Experience -->
+          <div class="experience-section">
+            <h3>Work Experience</h3>
+            <div class="experience-card">
+              <h4>Kyndryl</h4>
+              <div class="position-details">
+                <h3 class="role">Machine Learning & AI Intern</h3>
+                <div class="meta-info">
+                  <span class="date">May 2024 - Jan 2025</span>
+                  <span class="location">Toronto, Canada</span>
+                </div>
+              </div>
+              <h5 class="project-title">Full Stack E-Form Parser</h5>
+              <ul class="responsibilities">
+                <li>
+                  Developed an Automated Form Parser System: Built a full-stack
+                  application using React, Node.js, PostgreSQL (SQL), and Python
+                  Flask to streamline data extraction and management for banking
+                  and financial forms, significantly improving workflow
+                  efficiency by automating form parsing and data consolidation.
+                </li>
+                <li>
+                  Automated Data Extraction: Leveraged AG Grid for dynamic and
+                  interactive data visualization. Designed the system to
+                  automatically extract structured data from uploaded PDFs or
+                  wireframe forms, categorizing it into different sections for
+                  ease of access and processing.
+                </li>
+                <li>
+                  Master Table Integration: Implemented advanced PostgreSQL
+                  queries to merge and analyze data from multiple forms. Enabled
+                  historical data comparison and seamless integration of new
+                  information with previously processed forms.
+                </li>
+                <li>
+                  Gained experience fine-tuning OpenAI models, including
+                  creating embeddings, developing pipelines, tokenizing, and
+                  parsing PDFs. Also worked on prompt engineering and created
+                  multiple large language models (LLMs) that connect to analyze
+                  forms and generate eForms.
+                </li>
+                <li>
+                  Full Development Cycle: Participated in every phase of
+                  development, from brainstorming meetings, proof of concept
+                  (PoC) creation, and workshops to professional slide decks,
+                  presentations, and live demos. Delivered thorough code
+                  documentation, scripting, error test cases, and handled
+                  end-to-end troubleshooting and demo preparation.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Education -->
+          <div class="education-section">
+            <h3>Education</h3>
+            <div class="education-card">
+              <h4>York University</h4>
+              <p class="date">2021 - Dec 2025 (Expected)</p>
+              <p class="degree">Honours in Computer Science</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Projects Tab -->
+      <section id="projects" class="tab-content">
+        <h2>Projects</h2>
+        <div class="projects-grid">
+          <!-- Library Management System -->
+          <div class="project-card">
+            <h3>Library Management System</h3>
+            <p>
+              Developed a GUI-based Java application for a university library,
+              enabling seamless interaction for students, faculty, staff, and
+              visitors.
+            </p>
+            <div class="technologies">
+              <span>Java</span>
+              <span>Eclipse</span>
+              <span>Git</span>
+              <span>XML</span>
+              <span>Java Swing</span>
+            </div>
+            <a
+              href="https://github.com/Calvinjkatt/LibraryMangment"
+              class="project-link"
+              target="_blank"
+              >View Project</a
+            >
+          </div>
+
+          <!-- S&P 500 Machine Learning Project -->
+          <div class="project-card">
+            <h3>S&P 500 Machine Learning Project</h3>
+            <p>
+              Designed a machine learning model to predict future S&P 500 prices
+              using data cleaning, optimization, and performance measurement
+              techniques.
+            </p>
+            <div class="technologies">
+              <span>Python</span>
+              <span>Jupyter</span>
+              <span>Pandas</span>
+              <span>NumPy</span>
+              <span>Seaborn</span>
+            </div>
+            <a
+              href="https://github.com/Calvinjkatt/MachineLearningStock"
+              class="project-link"
+              target="_blank"
+              >View Project</a
+            >
+          </div>
+
+          <!-- Weather App -->
+          <div class="project-card">
+            <h3>Weather App</h3>
+            <p>
+              Developed a React JS weather application using OpenWeatherMap API
+              to provide real-time weather updates.
+            </p>
+            <div class="technologies">
+              <span>JavaScript</span>
+              <span>HTML</span>
+              <span>CSS</span>
+              <span>React</span>
+              <span>VS Code</span>
+            </div>
+            <a
+              href="https://github.com/Calvinjkatt/ReactWeatherApp"
+              class="project-link"
+              target="_blank"
+              >View Project</a
+            >
+          </div>
+
+          <!-- NBA Player Stats Analyzer -->
+          <div class="project-card">
+            <h3>NBA Player Stats Analyzer</h3>
+            <p>
+              Built a Flask web application to analyze NBA player stats against
+              specific teams using the NBA API, providing insights into player
+              performance over multiple seasons.
+            </p>
+            <div class="technologies">
+              <span>Python</span>
+              <span>Flask</span>
+              <span>NBA API</span>
+              <span>Pandas</span>
+              <span>JavaScript</span>
+              <span>HTML</span>
+              <span>CSS</span>
+            </div>
+            <a
+              href="https://github.com/Calvinjkatt/NBAplayerstats"
+              class="project-link"
+              target="_blank"
+              >View Project</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- Resume Tab -->
+      <section id="resume" class="tab-content">
+        <h2>Resume</h2>
+        <div class="resume-container">
+          <iframe
+            src="Calvin-KattatharaSD.pdf#zoom=65&toolbar=0&navpanes=0&scrollbar=0"
+            class="resume-viewer"
+            title="Resume"
+          ></iframe>
+          <a href="Calvin-KattatharaSD.pdf" download class="download-btn"
+            >Download Resume</a
+          >
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
