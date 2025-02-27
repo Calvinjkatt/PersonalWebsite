@@ -1,13 +1,16 @@
+/* Tab Content - Hidden by Default */
 .tab-content {
   display: none;
   padding: 2rem;
-  animation: fadeIn 0.5s ease;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
+/* Active Tab Content */
 .tab-content.active {
   display: block;
 }
 
+/* Tab Navigation Buttons */
 .tab-btn {
   padding: 0.8rem 1.5rem;
   border: none;
@@ -17,37 +20,57 @@
   color: var(--gray);
   font-weight: 500;
   position: relative;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, transform 0.2s ease;
 }
 
+/* Underline Effect */
 .tab-btn::after {
   content: "";
   position: absolute;
   bottom: -2px;
-  left: 0;
+  left: 50%;
   width: 0;
   height: 2px;
   background-color: var(--primary);
-  transition: width 0.3s ease;
+  transition: width 0.3s ease, left 0.3s ease;
 }
 
+/* Hover Effects */
 .tab-btn:hover {
   color: var(--primary);
+  transform: translateY(-2px);
 }
 
 .tab-btn:hover::after {
   width: 100%;
+  left: 0;
 }
 
+/* Active Tab */
 .tab-btn.active {
   color: var(--primary);
 }
 
 .tab-btn.active::after {
   width: 100%;
+  left: 0;
 }
 
-/* Animations */
+/* Tab Navigation Container */
+.nav-tabs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap; /* Allows tabs to wrap on smaller screens */
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+}
+
+/* Smooth Fade-In Animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -59,21 +82,36 @@
   }
 }
 
-/* Responsive Design */
+/* Responsive Design for Smaller Screens */
 @media (max-width: 768px) {
   .tab-btn {
     padding: 0.6rem 1rem;
     font-size: 0.9rem;
   }
+
+  .nav-tabs {
+    flex-direction: column; /* Stacks tabs vertically on mobile */
+    text-align: center;
+  }
 }
 
+/* Navigation Title */
+/* Navigation Title */
 .nav-name {
   position: absolute;
-  left: 1rem; /* Aligns it to the left */
+  left: 1rem; /* Aligns text to the left */
   top: 50%; /* Centers vertically */
   transform: translateY(-50%); /* Adjusts vertical alignment */
   font-size: 1.2rem;
   font-weight: bold;
-  color: var(--primary); /* Adjust color based on your theme */
-  white-space: nowrap; /* Prevents text from wrapping */
+  color: var(--primary);
+  white-space: nowrap; /* Prevents text wrapping */
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Hide "Calvin Katthara" when screen width is below 600px */
+@media (max-width: 600px) {
+  .nav-name {
+    display: none;
+  }
 }
