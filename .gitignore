@@ -12,7 +12,8 @@ pnpm-lock.yaml
 dist/
 build/
 .next/
-# out/ - Commented out to allow committing build for manual deployment
+out/
+# docs/ - Commented out to allow committing build for manual deployment
 *.tsbuildinfo
 
 # Environment variables
