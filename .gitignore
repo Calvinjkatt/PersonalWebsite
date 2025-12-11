@@ -13,7 +13,7 @@ dist/
 build/
 .next/
 out/
-# docs/ - Commented out to allow committing build for manual deployment
+# docs/ folder contains built site for GitHub Pages (committed)
 *.tsbuildinfo
 
 # Environment variables
