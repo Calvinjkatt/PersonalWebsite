@@ -58,6 +58,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <base href="/PersonalWebsite/" />
       </head>
       <body className="theme-transition relative overflow-x-hidden antialiased">
         <ThemeProviderWrapper>
