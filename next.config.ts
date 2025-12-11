@@ -1,22 +1,12 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  // Tells Next.js to generate a static site (HTML/CSS/JS)
-  output: 'export',
-  
-  // Build output directory - GitHub Pages looks at 'docs' folder
-  distDir: 'docs',
-  
-  // Only use basePath for production builds (GitHub Pages), not in development
-  // In dev mode, access at localhost:3000. In production, access at /PersonalWebsite
-  basePath: process.env.NODE_ENV === 'production' ? '/PersonalWebsite' : '',
-  
-  // Required for images to work in static export
+  output: 'export',      // Tells Next.js to generate a static HTML site
+  distDir: 'docs',       // Builds everything into the 'docs' folder for GitHub Pages
+  basePath: '/PersonalWebsite', // Required since repo name is PersonalWebsite, not calvinjkatt.github.io
   images: {
-    unoptimized: true,
+    unoptimized: true,   // Essential for images to work on GitHub Pages
   },
-
-  // Performance optimizations
   reactStrictMode: true,
 };
 
