@@ -33,6 +33,17 @@ jobs:
       
       - name: Build
         run: npm run build
+        env:
+          CI: false
+      
+      - name: Verify build output
+        run: |
+          if [ ! -d "out" ]; then
+            echo "Error: out directory not found after build"
+            exit 1
+          fi
+          echo "Build output verified:"
+          ls -la out/ | head -20
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
