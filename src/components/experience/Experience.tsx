@@ -375,7 +375,7 @@ export function Experience() {
           className="mt-16 text-center"
         >
           <motion.a
-            href="/hero/CalvinK_Resume2026.pdf"
+            href="/PersonalWebsite/hero/CalvinK_Resume2026.pdf"
             download="Calvin-Kattathara-Resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
