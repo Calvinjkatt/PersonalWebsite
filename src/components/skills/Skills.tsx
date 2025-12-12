@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 // ============================================
 // SKILL GALAXIES DATA
@@ -78,14 +79,16 @@ function SkillGalaxy({ title, center, gradient, skills, isSelected, onClick, pos
   const orbitSkillSize = 'h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16';
   const orbitSkillText = 'text-[10px] sm:text-xs md:text-sm';
 
+  const isMobile = useIsMobile();
+  
   return (
     <motion.button
       onClick={onClick}
       className="flex flex-col items-center gap-4 sm:gap-6 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 rounded-2xl p-3 sm:p-4 transition-all touch-manipulation"
-      whileHover={!isSelected ? { scale: 1.05 } : {}}
-      whileTap={{ scale: 0.98 }}
-      layout
-      transition={{ duration: 0.5, ease: 'easeInOut' }}
+      whileHover={isMobile || !isSelected ? {} : { scale: 1.05 }}
+      whileTap={isMobile ? {} : { scale: 0.98 }}
+      layout={!isMobile}
+      transition={isMobile ? {} : { duration: 0.5, ease: 'easeInOut' }}
       style={{ WebkitTapHighlightColor: 'transparent' }}
     >
       <motion.span
@@ -104,12 +107,18 @@ function SkillGalaxy({ title, center, gradient, skills, isSelected, onClick, pos
           style={{
             transformOrigin: 'center center',
           }}
-          animate={{
+          animate={isMobile ? {
+            scale: isSelected ? 1 : 0.75,
+            opacity: isSelected ? 1 : 0.6,
+          } : {
             scale: isSelected ? 1 : 0.75,
             opacity: isSelected ? 1 : 0.6,
             rotate: isSelected ? [0, 2, -2, 0] : 0,
           }}
-          transition={{ 
+          transition={isMobile ? { 
+            scale: { duration: 0.3 },
+            opacity: { duration: 0.3 },
+          } : { 
             scale: { 
               type: 'spring',
               stiffness: 200,
@@ -203,6 +212,7 @@ function SkillGalaxy({ title, center, gradient, skills, isSelected, onClick, pos
 // SKILLS COMPONENT
 // ============================================
 export function Skills() {
+  const isMobile = useIsMobile();
   // Track position of each galaxy: [leftIndex, centerIndex, rightIndex]
   // Default: [0=Python, 1=Java, 2=React]
   const [positions, setPositions] = useState<[number, number, number]>([0, 1, 2]);
@@ -243,10 +253,10 @@ export function Skills() {
     >
       <div className="mx-auto max-w-7xl lg:px-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={isMobile ? false : { opacity: 0, y: 20 }}
+          whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
-                  transition={{ duration: 0.8 }}
+                  transition={isMobile ? {} : { duration: 0.8 }}
                   className="mb-12 md:mb-16 text-center"
                 >
           <span className="inline-block mb-5 text-sky-600 dark:text-sky-400 tracking-[0.15em] uppercase text-xs font-semibold">
@@ -328,10 +338,10 @@ export function Skills() {
             return (
               <motion.div
                 key={`${galaxy.title}-mobile-${index}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={isMobile ? false : { opacity: 0, y: 20 }}
+                whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={isMobile ? {} : { duration: 0.5, delay: index * 0.1 }}
                 className="w-full"
               >
                 <SkillGalaxy

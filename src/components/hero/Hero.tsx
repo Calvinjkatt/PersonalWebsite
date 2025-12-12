@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 // ============================================
 // HERO CONTENT
@@ -30,6 +31,8 @@ const WHO_I_AM_CONTENT = {
 // HERO COMPONENT
 // ============================================
 export function Hero() {
+  const isMobile = useIsMobile();
+  
   return (
     <section className="relative py-12 md:py-16 bg-gradient-to-b from-background via-white/95 to-background dark:from-background dark:via-stone-950/95 dark:to-background backdrop-blur-md">
       <div className="mx-auto max-w-6xl px-6 lg:px-10 w-full">
@@ -39,9 +42,9 @@ export function Hero() {
             {/* Initial Hero Section */}
             <motion.div
               className="space-y-3"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
+              initial={isMobile ? false : { opacity: 0, y: 20 }}
+              animate={isMobile ? {} : { opacity: 1, y: 0 }}
+              transition={isMobile ? {} : { duration: 0.5, ease: 'easeOut' }}
             >
               <p className="text-xs uppercase tracking-[0.15em] text-sky-600 dark:text-sky-400 font-semibold">
                 {TITLE_LABEL}
@@ -71,9 +74,9 @@ export function Hero() {
             {/* Who I Am Section */}
             <motion.div
               className="space-y-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: 'easeOut', delay: 0.08 }}
+              initial={isMobile ? false : { opacity: 0, y: 20 }}
+              animate={isMobile ? {} : { opacity: 1, y: 0 }}
+              transition={isMobile ? {} : { duration: 0.5, ease: 'easeOut', delay: 0.08 }}
             >
               <p className="text-xs uppercase tracking-[0.15em] text-orange-600 dark:text-orange-400 font-semibold">
                 {WHO_I_AM_CONTENT.label}
@@ -105,13 +108,13 @@ export function Hero() {
             {/* Avatar Orb */}
             <motion.div
               className="flex items-center justify-center"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{
+              initial={isMobile ? false : { opacity: 0, scale: 0.9 }}
+              animate={isMobile ? {} : {
                 opacity: 1,
                 scale: 1,
                 y: [0, -8, 0],
               }}
-              transition={{
+              transition={isMobile ? {} : {
                 opacity: { duration: 0.8, ease: 'easeOut', delay: 0.1 },
                 scale: { duration: 0.8, ease: 'easeOut', delay: 0.1 },
                 y: {
@@ -122,8 +125,8 @@ export function Hero() {
               }}
             >
               <div className="relative flex items-center justify-center">
-                {/* Creative floating particles/sparkles */}
-                {[...Array(6)].map((_, i) => (
+                {/* Creative floating particles/sparkles - Disabled on mobile */}
+                {!isMobile && [...Array(6)].map((_, i) => (
                   <motion.div
                     key={i}
                     className="absolute w-2 h-2 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 opacity-60"
@@ -145,66 +148,70 @@ export function Hero() {
                   />
                 ))}
 
-                {/* Enhanced Gradient Blobs - More vibrant */}
-                <motion.div 
-                  className="absolute -bottom-8 -left-8 h-48 w-48 rounded-full bg-gradient-to-r from-blue-400/40 via-purple-400/40 to-pink-400/40 blur-3xl"
-                  animate={{
-                    scale: [1, 1.1, 1],
-                    opacity: [0.6, 0.8, 0.6],
-                    rotate: [0, 180, 360],
-                  }}
-                  transition={{
-                    duration: 6,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                />
-                <motion.div 
-                  className="absolute -top-8 -right-8 h-48 w-48 rounded-full bg-gradient-to-r from-pink-400/40 via-orange-400/40 to-purple-400/40 blur-3xl"
-                  animate={{
-                    scale: [1.1, 1, 1.1],
-                    opacity: [0.6, 0.8, 0.6],
-                    rotate: [360, 180, 0],
-                  }}
-                  transition={{
-                    duration: 8,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                />
+                {/* Enhanced Gradient Blobs - Disabled on mobile */}
+                {!isMobile && (
+                  <>
+                    <motion.div 
+                      className="absolute -bottom-8 -left-8 h-48 w-48 rounded-full bg-gradient-to-r from-blue-400/40 via-purple-400/40 to-pink-400/40 blur-3xl"
+                      animate={{
+                        scale: [1, 1.1, 1],
+                        opacity: [0.6, 0.8, 0.6],
+                        rotate: [0, 180, 360],
+                      }}
+                      transition={{
+                        duration: 6,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                      }}
+                    />
+                    <motion.div 
+                      className="absolute -top-8 -right-8 h-48 w-48 rounded-full bg-gradient-to-r from-pink-400/40 via-orange-400/40 to-purple-400/40 blur-3xl"
+                      animate={{
+                        scale: [1.1, 1, 1.1],
+                        opacity: [0.6, 0.8, 0.6],
+                        rotate: [360, 180, 0],
+                      }}
+                      transition={{
+                        duration: 8,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                      }}
+                    />
 
-                {/* Animated glow ring */}
-                <motion.div
-                  className="absolute h-56 w-56 md:h-64 md:w-64 rounded-full bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-2xl"
-                  animate={{
-                    scale: [1, 1.05, 1],
-                    opacity: [0.5, 0.7, 0.5],
-                  }}
-                  transition={{
-                    duration: 5,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                />
+                    {/* Animated glow ring */}
+                    <motion.div
+                      className="absolute h-56 w-56 md:h-64 md:w-64 rounded-full bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-2xl"
+                      animate={{
+                        scale: [1, 1.05, 1],
+                        opacity: [0.5, 0.7, 0.5],
+                      }}
+                      transition={{
+                        duration: 5,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                      }}
+                    />
 
-                {/* Decorative gradient ring around the orb */}
-                <motion.div
-                  className="absolute h-[280px] w-[280px] md:h-[320px] md:w-[320px] rounded-full"
-                  style={{
-                    background: 'conic-gradient(from 0deg, rgba(59,130,246,0.2), rgba(139,92,246,0.2), rgba(236,72,153,0.2), rgba(59,130,246,0.2))',
-                    padding: '2px',
-                  }}
-                  animate={{
-                    rotate: [0, 360],
-                  }}
-                  transition={{
-                    duration: 20,
-                    repeat: Infinity,
-                    ease: 'linear',
-                  }}
-                >
-                  <div className="h-full w-full rounded-full bg-transparent" />
-                </motion.div>
+                    {/* Decorative gradient ring around the orb */}
+                    <motion.div
+                      className="absolute h-[280px] w-[280px] md:h-[320px] md:w-[320px] rounded-full"
+                      style={{
+                        background: 'conic-gradient(from 0deg, rgba(59,130,246,0.2), rgba(139,92,246,0.2), rgba(236,72,153,0.2), rgba(59,130,246,0.2))',
+                        padding: '2px',
+                      }}
+                      animate={{
+                        rotate: [0, 360],
+                      }}
+                      transition={{
+                        duration: 20,
+                        repeat: Infinity,
+                        ease: 'linear',
+                      }}
+                    >
+                      <div className="h-full w-full rounded-full bg-transparent" />
+                    </motion.div>
+                  </>
+                )}
 
                 {/* Main Orb Circle with enhanced styling */}
                 <div className="relative h-56 w-56 md:h-64 md:w-64 rounded-full bg-gradient-to-br from-white via-white to-blue-50/30 dark:from-stone-900 dark:via-stone-900 dark:to-blue-950/30 shadow-[0_0_0_1px_rgba(59,130,246,0.1),0_25px_70px_rgba(59,130,246,0.2),0_0_100px_rgba(139,92,246,0.15)] dark:shadow-[0_0_0_1px_rgba(139,92,246,0.2),0_25px_70px_rgba(139,92,246,0.3),0_0_100px_rgba(139,92,246,0.2)] backdrop-blur-xl overflow-hidden flex items-center justify-center border-2 border-white/50 dark:border-stone-700/50 hover:shadow-[0_0_0_2px_rgba(59,130,246,0.2),0_35px_100px_rgba(59,130,246,0.3),0_0_120px_rgba(139,92,246,0.2)] dark:hover:shadow-[0_0_0_2px_rgba(139,92,246,0.3),0_35px_100px_rgba(139,92,246,0.4),0_0_120px_rgba(139,92,246,0.3)] transition-all duration-700 group z-10">
@@ -230,23 +237,25 @@ export function Hero() {
 
             {/* Info Box */}
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
+              initial={isMobile ? false : { opacity: 0, x: 20 }}
+              animate={isMobile ? {} : { opacity: 1, x: 0 }}
+              transition={isMobile ? {} : { delay: 0.3, duration: 0.6 }}
             >
               <div className="relative">
-                {/* Enhanced blurred gradient background */}
-                <motion.div 
-                  className="absolute -inset-3 bg-gradient-to-br from-purple-200/40 via-pink-200/30 to-orange-200/40 dark:from-purple-900/25 dark:via-pink-900/15 dark:to-orange-900/20 rounded-2xl blur-2xl"
-                  animate={{
-                    opacity: [0.6, 0.8, 0.6],
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                />
+                {/* Enhanced blurred gradient background - Static on mobile */}
+                {!isMobile && (
+                  <motion.div 
+                    className="absolute -inset-3 bg-gradient-to-br from-purple-200/40 via-pink-200/30 to-orange-200/40 dark:from-purple-900/25 dark:via-pink-900/15 dark:to-orange-900/20 rounded-2xl blur-2xl"
+                    animate={{
+                      opacity: [0.6, 0.8, 0.6],
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
+                  />
+                )}
                 
                 {/* Enhanced glassmorphism card */}
                 <div className="relative bg-gradient-to-br from-white/80 via-white/75 to-blue-50/30 dark:from-stone-900/80 dark:via-stone-900/75 dark:to-blue-950/30 backdrop-blur-xl rounded-2xl p-6 border border-white/70 dark:border-stone-700/70 shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_48px_rgba(139,92,246,0.15)] dark:hover:shadow-[0_12px_48px_rgba(139,92,246,0.25)] hover:border-purple-200/80 dark:hover:border-purple-700/80 transition-all duration-500 group/card">
@@ -258,12 +267,12 @@ export function Hero() {
                       <motion.div
                         key={index}
                         className="flex items-center gap-4 group/item"
-                        whileHover={{ x: 6 }}
-                        transition={{ duration: 0.25, ease: 'easeOut' }}
+                        whileHover={isMobile ? {} : { x: 6 }}
+                        transition={isMobile ? {} : { duration: 0.25, ease: 'easeOut' }}
                       >
                         <motion.div
                           className={`w-1.5 h-10 rounded-full bg-gradient-to-b ${item.color} shadow-sm group-hover/item:scale-y-115 group-hover/item:shadow-md transition-all duration-300`}
-                          whileHover={{ scaleY: 1.15 }}
+                          whileHover={isMobile ? {} : { scaleY: 1.15 }}
                         />
                         <div className="flex-1">
                           <p className="text-stone-900 dark:text-stone-50 font-semibold text-sm leading-tight group-hover/item:text-purple-600 dark:group-hover/item:text-purple-400 transition-colors duration-300">
@@ -280,19 +289,21 @@ export function Hero() {
                   </div>
                 </div>
 
-                {/* Enhanced decorative blobs */}
-                <motion.div 
-                  className="absolute -right-8 -bottom-8 w-32 h-32 bg-gradient-to-br from-purple-400/40 to-pink-400/40 rounded-full blur-3xl -z-10"
-                  animate={{
-                    scale: [1, 1.1, 1],
-                    opacity: [0.3, 0.5, 0.3],
-                  }}
-                  transition={{
-                    duration: 5,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                />
+                {/* Enhanced decorative blobs - Disabled on mobile */}
+                {!isMobile && (
+                  <motion.div 
+                    className="absolute -right-8 -bottom-8 w-32 h-32 bg-gradient-to-br from-purple-400/40 to-pink-400/40 rounded-full blur-3xl -z-10"
+                    animate={{
+                      scale: [1, 1.1, 1],
+                      opacity: [0.3, 0.5, 0.3],
+                    }}
+                    transition={{
+                      duration: 5,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
+                  />
+                )}
               </div>
             </motion.div>
           </div>

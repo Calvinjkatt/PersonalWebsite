@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useMemo } from 'react';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 // Deterministic star positions
 const generateStarData = (count: number) => {
@@ -27,6 +28,7 @@ const generateStarData = (count: number) => {
 export function AnimatedBackground() {
   const { theme } = useTheme();
   const isLight = theme === 'light';
+  const isMobile = useIsMobile();
 
   // Check for reduced motion preference
   const prefersReducedMotion = useMemo(() => {
@@ -34,7 +36,8 @@ export function AnimatedBackground() {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }, []);
 
-  if (prefersReducedMotion) {
+  // Simplified background for mobile or reduced motion
+  if (prefersReducedMotion || isMobile) {
     return (
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-br from-white via-blue-50/15 to-purple-50/10 dark:from-stone-950 dark:via-blue-950/20 dark:to-purple-950/10" />
