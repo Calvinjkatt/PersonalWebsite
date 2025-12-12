@@ -107,31 +107,25 @@ function SkillGalaxy({ title, center, gradient, skills, isSelected, onClick, pos
           style={{
             transformOrigin: 'center center',
           }}
-          animate={isMobile ? {
-            scale: isSelected ? 1 : 0.75,
-            opacity: isSelected ? 1 : 0.6,
-          } : {
+          animate={{
             scale: isSelected ? 1 : 0.75,
             opacity: isSelected ? 1 : 0.6,
             rotate: isSelected ? [0, 2, -2, 0] : 0,
           }}
-          transition={isMobile ? { 
-            scale: { duration: 0.3 },
-            opacity: { duration: 0.3 },
-          } : { 
+          transition={{ 
             scale: { 
               type: 'spring',
-              stiffness: 200,
-              damping: 20,
-              duration: 0.6,
+              stiffness: isMobile ? 250 : 200,
+              damping: isMobile ? 25 : 20,
+              duration: isMobile ? 0.4 : 0.6,
             },
             rotate: {
-              duration: 4,
+              duration: isMobile ? 3 : 4,
               repeat: Infinity,
               ease: 'easeInOut',
             },
             opacity: {
-              duration: 0.4,
+              duration: isMobile ? 0.3 : 0.4,
             },
           }}
         >
@@ -253,10 +247,10 @@ export function Skills() {
     >
       <div className="mx-auto max-w-7xl lg:px-10">
         <motion.div
-          initial={isMobile ? false : { opacity: 0, y: 20 }}
-          whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
-                  transition={isMobile ? {} : { duration: 0.8 }}
+                  transition={{ duration: isMobile ? 0.4 : 0.8 }}
                   className="mb-12 md:mb-16 text-center"
                 >
           <span className="inline-block mb-5 text-sky-600 dark:text-sky-400 tracking-[0.15em] uppercase text-xs font-semibold">
@@ -338,10 +332,10 @@ export function Skills() {
             return (
               <motion.div
                 key={`${galaxy.title}-mobile-${index}`}
-                initial={isMobile ? false : { opacity: 0, y: 20 }}
-                whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={isMobile ? {} : { duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: isMobile ? 0.3 : 0.5, delay: isMobile ? index * 0.05 : index * 0.1 }}
                 className="w-full"
               >
                 <SkillGalaxy
