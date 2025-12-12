@@ -85,10 +85,10 @@ function SkillGalaxy({ title, center, gradient, skills, isSelected, onClick, pos
     <motion.button
       onClick={onClick}
       className="flex flex-col items-center gap-4 sm:gap-6 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 rounded-2xl p-3 sm:p-4 transition-all touch-manipulation"
-      whileHover={isMobile || !isSelected ? {} : { scale: 1.05 }}
-      whileTap={isMobile ? {} : { scale: 0.98 }}
-      layout={!isMobile}
-      transition={isMobile ? {} : { duration: 0.5, ease: 'easeInOut' }}
+      whileHover={!isSelected ? { scale: 1.05 } : {}}
+      whileTap={{ scale: 0.98 }}
+      layout
+      transition={{ duration: 0.5, ease: 'easeInOut' }}
       style={{ WebkitTapHighlightColor: 'transparent' }}
     >
       <motion.span
@@ -115,17 +115,17 @@ function SkillGalaxy({ title, center, gradient, skills, isSelected, onClick, pos
           transition={{ 
             scale: { 
               type: 'spring',
-              stiffness: isMobile ? 250 : 200,
-              damping: isMobile ? 25 : 20,
-              duration: isMobile ? 0.4 : 0.6,
+              stiffness: 200,
+              damping: 20,
+              duration: 0.6,
             },
             rotate: {
-              duration: isMobile ? 3 : 4,
+              duration: 4,
               repeat: Infinity,
               ease: 'easeInOut',
             },
             opacity: {
-              duration: isMobile ? 0.3 : 0.4,
+              duration: 0.4,
             },
           }}
         >
@@ -250,7 +250,7 @@ export function Skills() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
-                  transition={{ duration: isMobile ? 0.4 : 0.8 }}
+                  transition={{ duration: 0.8 }}
                   className="mb-12 md:mb-16 text-center"
                 >
           <span className="inline-block mb-5 text-sky-600 dark:text-sky-400 tracking-[0.15em] uppercase text-xs font-semibold">
@@ -335,7 +335,7 @@ export function Skills() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: isMobile ? 0.3 : 0.5, delay: isMobile ? index * 0.05 : index * 0.1 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="w-full"
               >
                 <SkillGalaxy
