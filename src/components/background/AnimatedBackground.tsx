@@ -228,13 +228,68 @@ function LightModeBackground() {
 }
 
 // ============================================
-// DARK MODE BACKGROUND - Clean & Simple
+// DARK MODE BACKGROUND - Elegant & Smooth
 // ============================================
 function DarkModeBackground() {
   return (
     <>
-      {/* Clean dark base */}
-      <div className="absolute inset-0 bg-gradient-to-b from-stone-950 via-stone-900 to-stone-950" />
+      {/* Elegant dark gradient base */}
+      <div className="absolute inset-0 bg-gradient-to-br from-stone-950 via-stone-900 to-stone-950" />
+      
+      {/* Subtle gradient orbs - No lines, just smooth gradients */}
+      <motion.div
+        className="absolute top-1/4 -left-40 w-[600px] h-[600px] rounded-full blur-3xl opacity-20"
+        animate={{
+          x: [0, 100, 0],
+          y: [0, 80, 0],
+          scale: [1, 1.15, 1],
+        }}
+        transition={{
+          duration: 25,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
+        style={{
+          background: 'radial-gradient(circle, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.08), transparent)',
+        }}
+      />
+
+      <motion.div
+        className="absolute bottom-1/3 -right-40 w-[550px] h-[550px] rounded-full blur-3xl opacity-15"
+        animate={{
+          x: [0, -90, 0],
+          y: [0, 100, 0],
+          scale: [1, 1.2, 1],
+        }}
+        transition={{
+          duration: 30,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
+        style={{
+          background: 'radial-gradient(circle, rgba(139, 92, 246, 0.12), rgba(236, 72, 153, 0.08), transparent)',
+        }}
+      />
+
+      {/* Subtle mesh gradient overlay - Smooth, no lines */}
+      <motion.div
+        className="absolute inset-0 opacity-30"
+        style={{
+          background: `
+            radial-gradient(at 20% 30%, rgba(59, 130, 246, 0.08) 0px, transparent 70%),
+            radial-gradient(at 80% 70%, rgba(139, 92, 246, 0.06) 0px, transparent 70%),
+            radial-gradient(at 50% 50%, rgba(236, 72, 153, 0.05) 0px, transparent 70%)
+          `,
+        }}
+        animate={{
+          opacity: [0.25, 0.35, 0.25],
+        }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
+      />
     </>
   );
 }

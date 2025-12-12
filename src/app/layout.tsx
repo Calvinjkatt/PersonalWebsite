@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { ThemeProviderWrapper } from '@/components/providers/ThemeProviderWrapper';
 import { AnimatedBackground } from '@/components/background/AnimatedBackground';
+import { Navbar } from '@/components/navbar/Navbar';
 
 export const metadata: Metadata = {
   title: 'Calvin Kattathara | Full-Stack Developer & Data Engineer',
@@ -62,6 +63,7 @@ export default function RootLayout({
       <body className="theme-transition relative overflow-x-hidden antialiased">
         <ThemeProviderWrapper>
           <AnimatedBackground />
+          <Navbar />
           {children}
         </ThemeProviderWrapper>
       </body>

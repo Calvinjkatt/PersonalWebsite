@@ -34,7 +34,7 @@ export function Hero() {
   const isMobile = useIsMobile();
   
   return (
-    <section className="relative py-12 md:py-16 bg-gradient-to-b from-background via-white/95 to-background dark:from-background dark:via-stone-950/95 dark:to-background backdrop-blur-md">
+    <section id="home" className="relative py-12 md:py-16 pt-24 md:pt-28 bg-gradient-to-b from-background via-white/95 to-background dark:from-background dark:via-stone-950/95 dark:to-background backdrop-blur-md">
       <div className="mx-auto max-w-6xl px-6 lg:px-10 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10 items-start">
           {/* Left Column - Combined Content */}
@@ -151,65 +151,65 @@ export function Hero() {
                 {/* Enhanced Gradient Blobs - Disabled on mobile */}
                 {!isMobile && (
                   <>
-                    <motion.div 
-                      className="absolute -bottom-8 -left-8 h-48 w-48 rounded-full bg-gradient-to-r from-blue-400/40 via-purple-400/40 to-pink-400/40 blur-3xl"
-                      animate={{
-                        scale: [1, 1.1, 1],
-                        opacity: [0.6, 0.8, 0.6],
-                        rotate: [0, 180, 360],
-                      }}
-                      transition={{
-                        duration: 6,
-                        repeat: Infinity,
-                        ease: 'easeInOut',
-                      }}
-                    />
-                    <motion.div 
-                      className="absolute -top-8 -right-8 h-48 w-48 rounded-full bg-gradient-to-r from-pink-400/40 via-orange-400/40 to-purple-400/40 blur-3xl"
-                      animate={{
-                        scale: [1.1, 1, 1.1],
-                        opacity: [0.6, 0.8, 0.6],
-                        rotate: [360, 180, 0],
-                      }}
-                      transition={{
-                        duration: 8,
-                        repeat: Infinity,
-                        ease: 'easeInOut',
-                      }}
-                    />
+                <motion.div 
+                  className="absolute -bottom-8 -left-8 h-48 w-48 rounded-full bg-gradient-to-r from-blue-400/40 via-purple-400/40 to-pink-400/40 blur-3xl"
+                  animate={{
+                    scale: [1, 1.1, 1],
+                    opacity: [0.6, 0.8, 0.6],
+                    rotate: [0, 180, 360],
+                  }}
+                  transition={{
+                    duration: 6,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
+                />
+                <motion.div 
+                  className="absolute -top-8 -right-8 h-48 w-48 rounded-full bg-gradient-to-r from-pink-400/40 via-orange-400/40 to-purple-400/40 blur-3xl"
+                  animate={{
+                    scale: [1.1, 1, 1.1],
+                    opacity: [0.6, 0.8, 0.6],
+                    rotate: [360, 180, 0],
+                  }}
+                  transition={{
+                    duration: 8,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
+                />
 
-                    {/* Animated glow ring */}
-                    <motion.div
-                      className="absolute h-56 w-56 md:h-64 md:w-64 rounded-full bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-2xl"
-                      animate={{
-                        scale: [1, 1.05, 1],
-                        opacity: [0.5, 0.7, 0.5],
-                      }}
-                      transition={{
-                        duration: 5,
-                        repeat: Infinity,
-                        ease: 'easeInOut',
-                      }}
-                    />
+                {/* Animated glow ring */}
+                <motion.div
+                  className="absolute h-56 w-56 md:h-64 md:w-64 rounded-full bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-2xl"
+                  animate={{
+                    scale: [1, 1.05, 1],
+                    opacity: [0.5, 0.7, 0.5],
+                  }}
+                  transition={{
+                    duration: 5,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
+                />
 
-                    {/* Decorative gradient ring around the orb */}
-                    <motion.div
-                      className="absolute h-[280px] w-[280px] md:h-[320px] md:w-[320px] rounded-full"
-                      style={{
-                        background: 'conic-gradient(from 0deg, rgba(59,130,246,0.2), rgba(139,92,246,0.2), rgba(236,72,153,0.2), rgba(59,130,246,0.2))',
-                        padding: '2px',
-                      }}
-                      animate={{
-                        rotate: [0, 360],
-                      }}
-                      transition={{
-                        duration: 20,
-                        repeat: Infinity,
-                        ease: 'linear',
-                      }}
-                    >
-                      <div className="h-full w-full rounded-full bg-transparent" />
-                    </motion.div>
+                {/* Decorative gradient ring around the orb */}
+                <motion.div
+                  className="absolute h-[280px] w-[280px] md:h-[320px] md:w-[320px] rounded-full"
+                  style={{
+                    background: 'conic-gradient(from 0deg, rgba(59,130,246,0.2), rgba(139,92,246,0.2), rgba(236,72,153,0.2), rgba(59,130,246,0.2))',
+                    padding: '2px',
+                  }}
+                  animate={{
+                    rotate: [0, 360],
+                  }}
+                  transition={{
+                    duration: 20,
+                    repeat: Infinity,
+                    ease: 'linear',
+                  }}
+                >
+                  <div className="h-full w-full rounded-full bg-transparent" />
+                </motion.div>
                   </>
                 )}
 
@@ -244,17 +244,17 @@ export function Hero() {
               <div className="relative">
                 {/* Enhanced blurred gradient background - Static on mobile */}
                 {!isMobile && (
-                  <motion.div 
-                    className="absolute -inset-3 bg-gradient-to-br from-purple-200/40 via-pink-200/30 to-orange-200/40 dark:from-purple-900/25 dark:via-pink-900/15 dark:to-orange-900/20 rounded-2xl blur-2xl"
-                    animate={{
-                      opacity: [0.6, 0.8, 0.6],
-                    }}
-                    transition={{
-                      duration: 4,
-                      repeat: Infinity,
-                      ease: 'easeInOut',
-                    }}
-                  />
+                <motion.div 
+                  className="absolute -inset-3 bg-gradient-to-br from-purple-200/40 via-pink-200/30 to-orange-200/40 dark:from-purple-900/25 dark:via-pink-900/15 dark:to-orange-900/20 rounded-2xl blur-2xl"
+                  animate={{
+                    opacity: [0.6, 0.8, 0.6],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
+                />
                 )}
                 
                 {/* Enhanced glassmorphism card */}
@@ -291,18 +291,18 @@ export function Hero() {
 
                 {/* Enhanced decorative blobs - Disabled on mobile */}
                 {!isMobile && (
-                  <motion.div 
-                    className="absolute -right-8 -bottom-8 w-32 h-32 bg-gradient-to-br from-purple-400/40 to-pink-400/40 rounded-full blur-3xl -z-10"
-                    animate={{
-                      scale: [1, 1.1, 1],
-                      opacity: [0.3, 0.5, 0.3],
-                    }}
-                    transition={{
-                      duration: 5,
-                      repeat: Infinity,
-                      ease: 'easeInOut',
-                    }}
-                  />
+                <motion.div 
+                  className="absolute -right-8 -bottom-8 w-32 h-32 bg-gradient-to-br from-purple-400/40 to-pink-400/40 rounded-full blur-3xl -z-10"
+                  animate={{
+                    scale: [1, 1.1, 1],
+                    opacity: [0.3, 0.5, 0.3],
+                  }}
+                  transition={{
+                    duration: 5,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
+                />
                 )}
               </div>
             </motion.div>
