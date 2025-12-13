@@ -3,6 +3,7 @@ import './globals.css';
 import { ThemeProviderWrapper } from '@/components/providers/ThemeProviderWrapper';
 import { AnimatedBackground } from '@/components/background/AnimatedBackground';
 import { Navbar } from '@/components/navbar/Navbar';
+import { Footer } from '@/components/footer/Footer';
 
 export const metadata: Metadata = {
   title: 'Calvin Kattathara | Full-Stack Developer & Data Engineer',
@@ -65,6 +66,7 @@ export default function RootLayout({
           <AnimatedBackground />
           <Navbar />
           {children}
+          <Footer />
         </ThemeProviderWrapper>
       </body>
     </html>

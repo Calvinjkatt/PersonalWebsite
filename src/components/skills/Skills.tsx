@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useIsMobile } from '@/hooks/useIsMobile';
 
 // ============================================
 // SKILL GALAXIES DATA
@@ -79,8 +78,6 @@ function SkillGalaxy({ title, center, gradient, skills, isSelected, onClick, pos
   const orbitSkillSize = 'h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16';
   const orbitSkillText = 'text-[10px] sm:text-xs md:text-sm';
 
-  const isMobile = useIsMobile();
-  
   return (
     <motion.button
       onClick={onClick}
@@ -206,7 +203,6 @@ function SkillGalaxy({ title, center, gradient, skills, isSelected, onClick, pos
 // SKILLS COMPONENT
 // ============================================
 export function Skills() {
-  const isMobile = useIsMobile();
   // Track position of each galaxy: [leftIndex, centerIndex, rightIndex]
   // Default: [0=Python, 1=Java, 2=React]
   const [positions, setPositions] = useState<[number, number, number]>([0, 1, 2]);

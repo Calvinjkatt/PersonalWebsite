@@ -46,16 +46,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     setMounted(true);
-    // Always default to light mode, but respect user's saved preference if they've explicitly set it
+    // Check localStorage first, then default to light
     if (typeof window !== 'undefined') {
       const stored = localStorage.getItem('theme') as Theme | null;
-      // Default to light mode - only use stored value if it exists (user has explicitly set a preference)
       const initialTheme = stored || 'light';
       setThemeState(initialTheme);
       applyTheme(initialTheme);
-    } else {
-      // SSR fallback - always start with light
-      setThemeState('light');
     }
   }, []);
 

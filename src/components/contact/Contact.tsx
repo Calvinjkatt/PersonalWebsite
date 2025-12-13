@@ -3,8 +3,10 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Github, Linkedin, Send, Sparkles } from 'lucide-react';
+import { useMobileOptimization } from '@/hooks/useMobileOptimization';
 
 export function Contact() {
+  const isMobile = useMobileOptimization();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -57,15 +59,15 @@ export function Contact() {
       <div className="relative max-w-6xl mx-auto">
         {/* Heading */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
+          viewport={isMobile ? undefined : { once: true }}
+          transition={isMobile ? { duration: 0 } : { duration: 0.8 }}
           className="text-center mb-10 md:mb-12"
         >
           <motion.div
-            animate={{ rotate: [0, 360] }}
-            transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+            animate={isMobile ? undefined : { rotate: [0, 360] }}
+            transition={isMobile ? { duration: 0 } : { duration: 20, repeat: Infinity, ease: 'linear' }}
             className="inline-block mb-5"
           >
             <Sparkles className="w-10 h-10 text-violet-600 dark:text-violet-400" />
@@ -95,10 +97,10 @@ export function Contact() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10">
           {/* Contact form */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            initial={isMobile ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+            whileInView={isMobile ? undefined : { opacity: 1, x: 0 }}
+            viewport={isMobile ? undefined : { once: true }}
+            transition={isMobile ? { duration: 0 } : { duration: 0.8 }}
             className="lg:col-span-2 order-1 lg:order-1"
           >
             <form onSubmit={handleSubmit} className="space-y-5">
@@ -173,10 +175,10 @@ export function Contact() {
 
           {/* Social links + location */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            initial={isMobile ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
+            whileInView={isMobile ? undefined : { opacity: 1, x: 0 }}
+            viewport={isMobile ? undefined : { once: true }}
+            transition={isMobile ? { duration: 0 } : { duration: 0.8, delay: 0.2 }}
             className="space-y-6 order-2 lg:order-2"
           >
             <h3
@@ -194,11 +196,11 @@ export function Contact() {
                   href={social.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                  whileHover={{ x: 10 }}
+                  initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
+                  viewport={isMobile ? undefined : { once: true }}
+                  transition={isMobile ? { duration: 0 } : { duration: 0.5, delay: 0.3 + index * 0.1 }}
+                  whileHover={isMobile ? undefined : { x: 10 }}
                   className="block group"
                 >
                   <div className="flex items-center gap-3.5 p-5 bg-white/60 dark:bg-stone-900/60 backdrop-blur-md rounded-xl border border-stone-200/60 dark:border-stone-700/60 hover:bg-white/70 dark:hover:bg-stone-900/70 hover:shadow-lg hover:border-stone-300/80 dark:hover:border-stone-600/80 hover:-translate-y-0.5 transition-all duration-300">

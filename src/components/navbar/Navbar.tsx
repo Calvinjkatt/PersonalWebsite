@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sun, Moon } from 'lucide-react';
-import { useIsMobile } from '@/hooks/useIsMobile';
+import { Menu, X, Moon, Sun } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 
 const navItems = [
@@ -17,13 +16,9 @@ const navItems = [
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const isMobile = useIsMobile();
-  const [mounted, setMounted] = useState(false);
   const { theme, toggleTheme } = useTheme();
-  const isDark = theme === 'dark';
 
   useEffect(() => {
-    setMounted(true);
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
@@ -39,167 +34,165 @@ export function Navbar() {
     }
   };
 
-  // Prevent hydration mismatch
-  if (!mounted) {
-    return (
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-transparent h-16 md:h-20">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 h-full flex items-center justify-between">
-          <div className="text-xl md:text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-            CK
-          </div>
-        </div>
-      </nav>
-    );
-  }
-
   return (
-    <>
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: isMobile ? 0.3 : 0.5, ease: 'easeOut' }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled
-            ? 'bg-white/80 dark:bg-stone-950/80 backdrop-blur-xl shadow-lg border-b border-stone-200/50 dark:border-stone-800/50'
-            : 'bg-transparent'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="flex items-center justify-between h-16 md:h-20">
-            {/* Logo/Brand */}
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5 }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? 'bg-white/80 dark:bg-stone-950/80 backdrop-blur-xl shadow-lg border-b border-stone-200/50 dark:border-stone-800/50'
+          : 'bg-transparent'
+      }`}
+    >
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <div className="flex items-center justify-between h-16 md:h-20">
+          {/* Logo */}
+          <motion.a
+            href="#home"
+            onClick={(e) => {
+              e.preventDefault();
+              handleNavClick('#home');
+            }}
+            className="flex items-center space-x-2 group"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 rounded-lg blur-sm opacity-50 group-hover:opacity-75 transition-opacity" />
+              <div className="relative px-3 py-1.5">
+                <span className="text-xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
+                  CK
+                </span>
+              </div>
+            </div>
+            <span className="hidden sm:block text-sm font-semibold text-stone-900 dark:text-stone-100">
+              Calvin Kattathara
+            </span>
+          </motion.a>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-1">
+            {navItems.map((item) => (
+              <motion.a
+                key={item.name}
+                href={item.href}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick(item.href);
+                }}
+                className="px-4 py-2 text-sm font-medium text-stone-700 dark:text-stone-300 rounded-lg hover:text-blue-600 dark:hover:text-blue-400 transition-colors relative group"
+                whileHover={{ y: -2 }}
+                whileTap={{ y: 0 }}
+              >
+                {item.name}
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
+              </motion.a>
+            ))}
+          </div>
+
+          {/* Right side - Theme Toggle & Mobile Menu */}
+          <div className="flex items-center space-x-3 md:space-x-4">
+            {/* Theme Toggle */}
             <motion.button
-              onClick={() => handleNavClick('#home')}
-              className="text-xl md:text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent hover:opacity-80 transition-opacity"
-              whileHover={{ scale: 1.05 }}
+              onClick={toggleTheme}
+              className="p-2.5 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 active:bg-stone-200 dark:active:bg-stone-700 transition-colors touch-manipulation"
+              whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.2 }}
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
             >
-              CK
+              <AnimatePresence mode="wait">
+                {theme === 'dark' ? (
+                  <motion.div
+                    key="sun"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Sun className="w-5 h-5 md:w-5 md:h-5" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="moon"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Moon className="w-5 h-5 md:w-5 md:h-5" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.button>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-8">
-              {navItems.map((item) => (
-                <motion.button
-                  key={item.name}
-                  onClick={() => handleNavClick(item.href)}
-                  className="text-sm font-medium text-stone-700 dark:text-stone-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors relative group"
-                  whileHover={{ y: -2 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {item.name}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 group-hover:w-full transition-all duration-300" />
-                </motion.button>
-              ))}
-              
-              {/* Theme Toggle - Desktop */}
-              <motion.button
-                onClick={toggleTheme}
-                className="p-2 rounded-lg text-stone-700 dark:text-stone-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
-                whileHover={{ scale: 1.1, rotate: 15 }}
-                whileTap={{ scale: 0.95 }}
-                aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
-                transition={{ duration: 0.2 }}
-              >
-                <AnimatePresence mode="wait">
-                  {isDark ? (
-                    <motion.div
-                      key="sun"
-                      initial={{ opacity: 0, rotate: -90 }}
-                      animate={{ opacity: 1, rotate: 0 }}
-                      exit={{ opacity: 0, rotate: 90 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Sun size={20} />
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="moon"
-                      initial={{ opacity: 0, rotate: 90 }}
-                      animate={{ opacity: 1, rotate: 0 }}
-                      exit={{ opacity: 0, rotate: -90 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Moon size={20} />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.button>
-            </div>
-
-            {/* Mobile: Theme Toggle & Menu Button */}
-            <div className="md:hidden flex items-center gap-2">
-              <motion.button
-                onClick={toggleTheme}
-                className="p-2 rounded-lg text-stone-700 dark:text-stone-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
-                whileTap={{ scale: 0.95 }}
-                aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
-              >
-                <AnimatePresence mode="wait">
-                  {isDark ? (
-                    <motion.div
-                      key="sun"
-                      initial={{ opacity: 0, rotate: -90 }}
-                      animate={{ opacity: 1, rotate: 0 }}
-                      exit={{ opacity: 0, rotate: 90 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Sun size={20} />
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="moon"
-                      initial={{ opacity: 0, rotate: 90 }}
-                      animate={{ opacity: 1, rotate: 0 }}
-                      exit={{ opacity: 0, rotate: -90 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Moon size={20} />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.button>
-              
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 text-stone-700 dark:text-stone-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                aria-label="Toggle menu"
-              >
-                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
-            </div>
+            
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden p-2.5 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 active:bg-stone-200 dark:active:bg-stone-700 transition-colors touch-manipulation"
+              aria-label="Toggle menu"
+              aria-expanded={isMobileMenuOpen}
+            >
+              <AnimatePresence mode="wait">
+                {isMobileMenuOpen ? (
+                  <motion.div
+                    key="close"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <X className="w-6 h-6" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="menu"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Menu className="w-6 h-6" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </button>
           </div>
         </div>
-      </motion.nav>
+      </div>
 
       {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: isMobile ? 0.15 : 0.2 }}
-            className="fixed top-16 md:hidden left-0 right-0 z-40 bg-white/95 dark:bg-stone-950/95 backdrop-blur-xl border-b border-stone-200/50 dark:border-stone-800/50 shadow-lg"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden overflow-hidden bg-white/95 dark:bg-stone-950/95 backdrop-blur-xl border-t border-stone-200/50 dark:border-stone-800/50"
           >
-            <div className="px-6 py-4 space-y-2">
+            <div className="px-6 py-4 space-y-1">
               {navItems.map((item, index) => (
-                <motion.button
+                <motion.a
                   key={item.name}
-                  onClick={() => handleNavClick(item.href)}
+                  href={item.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavClick(item.href);
+                  }}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.2, delay: isMobile ? index * 0.03 : index * 0.05 }}
-                  className="w-full text-left px-4 py-3 text-base font-medium text-stone-700 dark:text-stone-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-stone-100 dark:hover:bg-stone-900 rounded-lg transition-colors"
+                  transition={{ delay: index * 0.08 }}
+                  className="block px-4 py-3 text-base font-medium text-stone-700 dark:text-stone-300 rounded-lg active:bg-stone-200 dark:active:bg-stone-700 hover:bg-stone-100 dark:hover:bg-stone-800 hover:text-blue-600 dark:hover:text-blue-400 transition-colors touch-manipulation min-h-[44px] flex items-center"
                 >
                   {item.name}
-                </motion.button>
+                </motion.a>
               ))}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </motion.nav>
   );
 }
 

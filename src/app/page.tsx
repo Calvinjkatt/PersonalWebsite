@@ -3,17 +3,20 @@ import { Skills } from '@/components/skills/Skills';
 import { Experience } from '@/components/experience/Experience';
 import { Projects } from '@/components/projects/Projects';
 import { Contact } from '@/components/contact/Contact';
-import { Footer } from '@/components/footer/Footer';
 
 export default function HomePage() {
   return (
     <main className="min-h-screen overflow-x-hidden">
+      <div id="home" />
       <Hero />
+      <div id="skills" />
       <Skills />
+      <div id="experience" />
       <Experience />
+      <div id="projects" />
       <Projects />
+      <div id="contact" />
       <Contact />
-      <Footer />
     </main>
   );
 }

@@ -3,7 +3,6 @@
 import { motion } from 'framer-motion';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useMemo } from 'react';
-import { useIsMobile } from '@/hooks/useIsMobile';
 
 // Deterministic star positions
 const generateStarData = (count: number) => {
@@ -28,7 +27,6 @@ const generateStarData = (count: number) => {
 export function AnimatedBackground() {
   const { theme } = useTheme();
   const isLight = theme === 'light';
-  const isMobile = useIsMobile();
 
   // Check for reduced motion preference
   const prefersReducedMotion = useMemo(() => {
@@ -36,8 +34,7 @@ export function AnimatedBackground() {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }, []);
 
-  // Simplified background for mobile or reduced motion
-  if (prefersReducedMotion || isMobile) {
+  if (prefersReducedMotion) {
     return (
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-br from-white via-blue-50/15 to-purple-50/10 dark:from-stone-950 dark:via-blue-950/20 dark:to-purple-950/10" />
@@ -228,68 +225,108 @@ function LightModeBackground() {
 }
 
 // ============================================
-// DARK MODE BACKGROUND - Elegant & Smooth
+// DARK MODE BACKGROUND - Smooth & Elegant
 // ============================================
 function DarkModeBackground() {
   return (
     <>
-      {/* Elegant dark gradient base */}
-      <div className="absolute inset-0 bg-gradient-to-br from-stone-950 via-stone-900 to-stone-950" />
+      {/* Smooth gradient base - No harsh lines */}
+      <div className="absolute inset-0 bg-gradient-to-br from-stone-950 via-stone-900/95 to-stone-950" />
       
-      {/* Subtle gradient orbs - No lines, just smooth gradients */}
+      {/* Subtle animated gradient orbs - Very low opacity */}
       <motion.div
-        className="absolute top-1/4 -left-40 w-[600px] h-[600px] rounded-full blur-3xl opacity-20"
+        className="absolute top-1/4 -left-40 w-[800px] h-[800px] rounded-full blur-3xl opacity-[0.03]"
         animate={{
-          x: [0, 100, 0],
-          y: [0, 80, 0],
-          scale: [1, 1.15, 1],
+          x: [0, 150, 0],
+          y: [0, 100, 0],
+          scale: [1, 1.3, 1],
+        }}
+        transition={{
+          duration: 35,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
+        style={{
+          background: 'radial-gradient(circle, rgba(59, 130, 246, 0.4), rgba(139, 92, 246, 0.3), transparent)',
+        }}
+      />
+
+      <motion.div
+        className="absolute bottom-1/3 -right-40 w-[700px] h-[700px] rounded-full blur-3xl opacity-[0.025]"
+        animate={{
+          x: [0, -130, 0],
+          y: [0, 140, 0],
+          scale: [1, 1.35, 1],
+        }}
+        transition={{
+          duration: 40,
+          repeat: Infinity,
+          ease: 'easeInOut',
+          delay: 2,
+        }}
+        style={{
+          background: 'radial-gradient(circle, rgba(236, 72, 153, 0.4), rgba(139, 92, 246, 0.3), transparent)',
+        }}
+      />
+
+      {/* Ultra-subtle mesh gradient overlay - Smooth transitions */}
+      <motion.div
+        className="absolute inset-0 opacity-[0.02]"
+        style={{
+          background: `
+            radial-gradient(at 20% 30%, rgba(59, 130, 246, 0.15) 0px, transparent 70%),
+            radial-gradient(at 80% 70%, rgba(236, 72, 153, 0.15) 0px, transparent 70%),
+            radial-gradient(at 50% 50%, rgba(139, 92, 246, 0.1) 0px, transparent 70%)
+          `,
+        }}
+        animate={{
+          opacity: [0.015, 0.025, 0.015],
         }}
         transition={{
           duration: 25,
           repeat: Infinity,
           ease: 'easeInOut',
         }}
-        style={{
-          background: 'radial-gradient(circle, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.08), transparent)',
-        }}
       />
 
-      <motion.div
-        className="absolute bottom-1/3 -right-40 w-[550px] h-[550px] rounded-full blur-3xl opacity-15"
-        animate={{
-          x: [0, -90, 0],
-          y: [0, 100, 0],
-          scale: [1, 1.2, 1],
-        }}
-        transition={{
-          duration: 30,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-        style={{
-          background: 'radial-gradient(circle, rgba(139, 92, 246, 0.12), rgba(236, 72, 153, 0.08), transparent)',
-        }}
-      />
+      {/* Very subtle floating particles - Minimal */}
+      {[...Array(3)].map((_, i) => {
+        const colors = [
+          'rgba(59, 130, 246, 0.02)',
+          'rgba(139, 92, 246, 0.015)',
+          'rgba(236, 72, 153, 0.02)',
+        ];
+        const color = colors[i % colors.length];
+        const size = 120 + (i % 2) * 60;
+        const delay = i * 1.5;
+        const duration = 25 + (i % 3) * 5;
 
-      {/* Subtle mesh gradient overlay - Smooth, no lines */}
-      <motion.div
-        className="absolute inset-0 opacity-30"
-        style={{
-          background: `
-            radial-gradient(at 20% 30%, rgba(59, 130, 246, 0.08) 0px, transparent 70%),
-            radial-gradient(at 80% 70%, rgba(139, 92, 246, 0.06) 0px, transparent 70%),
-            radial-gradient(at 50% 50%, rgba(236, 72, 153, 0.05) 0px, transparent 70%)
-          `,
-        }}
-        animate={{
-          opacity: [0.25, 0.35, 0.25],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-      />
+        return (
+          <motion.div
+            key={`dark-particle-${i}`}
+            className="absolute rounded-full blur-3xl"
+            style={{
+              width: `${size}px`,
+              height: `${size}px`,
+              background: `radial-gradient(circle, ${color}, transparent 80%)`,
+              left: `${(i * 30) % 100}%`,
+              top: `${(i * 35) % 100}%`,
+            }}
+            animate={{
+              x: [0, Math.sin(i * 0.5) * 200, 0],
+              y: [0, Math.cos(i * 0.5) * 200, 0],
+              scale: [1, 1.3, 1],
+              opacity: [0.01, 0.02, 0.01],
+            }}
+            transition={{
+              duration,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay,
+            }}
+          />
+        );
+      })}
     </>
   );
 }
