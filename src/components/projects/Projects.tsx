@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { ExternalLink, Github, ArrowUpRight } from 'lucide-react';
-import { useMobileOptimization } from '@/hooks/useMobileOptimization';
 
 // ============================================
 // PROJECT TYPE
@@ -53,14 +52,12 @@ const projects: Project[] = [
 // PROJECT CARD COMPONENT
 // ============================================
 function ProjectCard({ project, index }: { project: Project; index: number }) {
-  const isMobile = useMobileOptimization();
-  
   return (
     <motion.div
-      initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-      whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
-      viewport={isMobile ? undefined : { once: true, amount: 0.3 }}
-      transition={isMobile ? { duration: 0 } : { duration: 0.6, delay: index * 0.1 }}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6, delay: index * 0.1 }}
       className="group relative"
     >
       {/* Blurred gradient background */}
@@ -74,8 +71,8 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         <motion.div
           className={`h-0.5 mb-5 rounded-full bg-gradient-to-r ${project.gradient}`}
           initial={{ width: 56 }}
-          whileHover={isMobile ? undefined : { width: 100 }}
-          transition={isMobile ? { duration: 0 } : { duration: 0.3 }}
+          whileHover={{ width: 100 }}
+          transition={{ duration: 0.3 }}
         />
 
         {/* Title */}
@@ -149,8 +146,6 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 // PROJECTS COMPONENT
 // ============================================
 export function Projects() {
-  const isMobile = useMobileOptimization();
-  
   return (
     <section
       id="projects"
@@ -159,10 +154,10 @@ export function Projects() {
       <div className="mx-auto max-w-7xl lg:px-10">
         {/* Heading */}
         <motion.div
-          initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
-          viewport={isMobile ? undefined : { once: true, amount: 0.4 }}
-          transition={isMobile ? { duration: 0 } : { duration: 0.8 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.8 }}
           className="mb-12 md:mb-16 text-center"
         >
           <span className="inline-block mb-5 text-sky-600 dark:text-sky-400 tracking-[0.15em] uppercase text-xs font-semibold">
@@ -184,10 +179,10 @@ export function Projects() {
 
         {/* Projects Grid */}
         <motion.div
-          initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
-          viewport={isMobile ? undefined : { once: true }}
-          transition={isMobile ? { duration: 0 } : { duration: 0.6 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
           className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8"
         >
           {projects.map((project, index) => (
@@ -197,17 +192,17 @@ export function Projects() {
 
         {/* CTA Footer */}
         <motion.div
-          initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
-          viewport={isMobile ? undefined : { once: true }}
-          transition={isMobile ? { duration: 0 } : { duration: 0.6, delay: 0.4 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-12 text-center"
         >
           <motion.a
             href="#contact"
             className="inline-flex items-center gap-2 px-7 py-3.5 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-500 dark:via-purple-500 dark:to-pink-500 text-white rounded-full font-semibold shadow-md hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
-            whileHover={isMobile ? undefined : { scale: 1.05 }}
-            whileTap={isMobile ? undefined : { scale: 0.95 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             Let&apos;s Build Something Together
             <ArrowUpRight className="w-5 h-5" />

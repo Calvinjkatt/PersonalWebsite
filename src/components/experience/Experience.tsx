@@ -4,7 +4,6 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Code, Database, Layers, Zap, TestTube, GitBranch } from 'lucide-react';
 import { assetPath } from '@/lib/paths';
-import { useMobileOptimization } from '@/hooks/useMobileOptimization';
 
 // ============================================
 // EXPERIENCE TYPE
@@ -118,15 +117,14 @@ const getColorClasses = (color: string) => {
 // EXPERIENCE COMPONENT
 // ============================================
 export function Experience() {
-  const isMobile = useMobileOptimization();
+  
   const ref = useRef<HTMLDivElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start center', 'end center'],
   });
 
-  // Disable scroll-based animations on mobile
-  const pathLength = isMobile ? useTransform(() => 1) : useTransform(scrollYProgress, [0, 1], [0, 1]);
+  const pathLength = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
     <section
@@ -138,10 +136,10 @@ export function Experience() {
 
       <div className="relative max-w-6xl mx-auto">
         <motion.div
-          initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
-          viewport={isMobile ? undefined : { once: true }}
-          transition={isMobile ? { duration: 0 } : { duration: 0.8 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
           className="mb-12 md:mb-16 text-center"
         >
           <span className="inline-block mb-5 text-sky-600 dark:text-sky-400 tracking-[0.15em] uppercase text-xs font-semibold">
@@ -191,10 +189,10 @@ export function Experience() {
               return (
                 <motion.div
                   key={index}
-                  initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-                  whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
-                  viewport={isMobile ? undefined : { once: true, amount: 0.3 }}
-                  transition={isMobile ? { duration: 0 } : { 
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ 
                     duration: 0.6, 
                     delay: index * 0.15,
                     ease: 'easeOut'
@@ -206,10 +204,10 @@ export function Experience() {
                   <div className="relative group">
                     {/* Year badge - desktop */}
                     <motion.div
-                      initial={isMobile ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -180 }}
-                      whileInView={isMobile ? undefined : { scale: 1, rotate: 0 }}
-                      viewport={isMobile ? undefined : { once: true }}
-                      transition={isMobile ? { duration: 0 } : { 
+                      initial={{ scale: 0, rotate: -180 }}
+                      whileInView={{ scale: 1, rotate: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ 
                         duration: 0.5, 
                         delay: index * 0.15 + 0.2, 
                         type: 'spring',
@@ -246,11 +244,11 @@ export function Experience() {
 
                     {/* Content card */}
                     <motion.div
-                      initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                      whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
-                      viewport={isMobile ? undefined : { once: true }}
-                      transition={isMobile ? { duration: 0 } : { duration: 0.5, delay: index * 0.15 + 0.1 }}
-                      whileHover={isMobile ? undefined : { scale: 1.01, y: -6 }}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: index * 0.15 + 0.1 }}
+                      whileHover={{ scale: 1.01, y: -6 }}
                       className={`relative bg-white/75 dark:bg-stone-900/75 backdrop-blur-md p-6 lg:p-8 rounded-2xl border ${colors.border} shadow-md group-hover:shadow-xl group-hover:border-opacity-50 transition-all duration-300`}
                     >
                       {/* subtle gradient overlay on hover */}
@@ -289,10 +287,10 @@ export function Experience() {
                             {exp.highlights.map((highlight, idx) => (
                               <motion.div
                                 key={idx}
-                                initial={isMobile ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
-                                whileInView={isMobile ? undefined : { opacity: 1, x: 0 }}
-                                viewport={isMobile ? undefined : { once: true }}
-                                transition={isMobile ? { duration: 0 } : { duration: 0.4, delay: index * 0.15 + 0.3 + idx * 0.08 }}
+                                initial={{ opacity: 0, x: -10 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4, delay: index * 0.15 + 0.3 + idx * 0.08 }}
                                 className="flex gap-2.5"
                               >
                                 <div className={`flex-shrink-0 w-1 rounded-full bg-gradient-to-b ${colors.gradient} mt-1.5`} />
@@ -307,10 +305,10 @@ export function Experience() {
                         {/* Tech Stack */}
                         {exp.techStack && exp.techStack.length > 0 && (
                           <motion.div
-                            initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-                            whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
-                            viewport={isMobile ? undefined : { once: true }}
-                            transition={isMobile ? { duration: 0 } : { duration: 0.4, delay: index * 0.15 + 0.5 }}
+                            initial={{ opacity: 0, y: 10 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.4, delay: index * 0.15 + 0.5 }}
                             className="mt-5 pt-5 border-t border-stone-200/60 dark:border-stone-700/60"
                           >
                             <div className="flex items-center gap-2 mb-3">
@@ -323,11 +321,11 @@ export function Experience() {
                               {exp.techStack.map((tech, idx) => (
                                 <motion.span
                                   key={tech}
-                                  initial={isMobile ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-                                  whileInView={isMobile ? undefined : { opacity: 1, scale: 1 }}
-                                  viewport={isMobile ? undefined : { once: true }}
-                                  transition={isMobile ? { duration: 0 } : { duration: 0.3, delay: index * 0.15 + 0.55 + idx * 0.04 }}
-                                  whileHover={isMobile ? undefined : { scale: 1.05, y: -1 }}
+                                  initial={{ opacity: 0, scale: 0.8 }}
+                                  whileInView={{ opacity: 1, scale: 1 }}
+                                  viewport={{ once: true }}
+                                  transition={{ duration: 0.3, delay: index * 0.15 + 0.55 + idx * 0.04 }}
+                                  whileHover={{ scale: 1.05, y: -1 }}
                                   className={`px-2.5 py-1 text-xs font-medium rounded-full bg-gradient-to-r ${colors.gradient} text-white shadow-sm hover:shadow-md transition-all`}
                                 >
                                   {tech}
@@ -339,17 +337,17 @@ export function Experience() {
 
                         {/* Decorative accent bar */}
                         <motion.div
-                          initial={isMobile ? { width: 64 } : { width: 0 }}
-                          whileInView={isMobile ? undefined : { width: 64 }}
-                          viewport={isMobile ? undefined : { once: true }}
-                          transition={isMobile ? { duration: 0 } : { duration: 0.6, delay: index * 0.15 + 0.4 }}
+                          initial={{ width: 0 }}
+                          whileInView={{ width: 64 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.6, delay: index * 0.15 + 0.4 }}
                           className={`h-0.5 bg-gradient-to-r ${colors.gradient} mt-5 rounded-full`}
                         />
                       </div>
                     </motion.div>
 
                     {/* Floating background shape - Disabled on mobile */}
-                    {!isMobile && (
+                    {(
                       <motion.div
                         animate={{
                           rotate: [0, 360],
@@ -374,10 +372,10 @@ export function Experience() {
 
         {/* Resume CTA */}
         <motion.div
-          initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
-          viewport={isMobile ? undefined : { once: true }}
-          transition={isMobile ? { duration: 0 } : { duration: 0.8 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
           className="mt-16 text-center"
         >
           <motion.a

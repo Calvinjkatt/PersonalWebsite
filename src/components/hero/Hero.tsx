@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { useMobileOptimization } from '@/hooks/useMobileOptimization';
+import { assetPath } from '@/lib/paths';
 
 // ============================================
 // HERO CONTENT
@@ -31,8 +31,6 @@ const WHO_I_AM_CONTENT = {
 // HERO COMPONENT
 // ============================================
 export function Hero() {
-  const isMobile = useMobileOptimization();
-  
   return (
     <section className="relative pt-24 md:pt-28 pb-12 md:pb-16 bg-gradient-to-b from-background via-white/95 to-background dark:from-background dark:via-stone-950/95 dark:to-background backdrop-blur-md">
       <div className="mx-auto max-w-6xl px-6 lg:px-10 w-full">
@@ -42,9 +40,10 @@ export function Hero() {
             {/* Initial Hero Section */}
             <motion.div
               className="space-y-3"
-              initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={isMobile ? { duration: 0 } : { duration: 0.5, ease: 'easeOut' }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.5, ease: 'easeOut' }}
             >
               <p className="text-xs uppercase tracking-[0.15em] text-sky-600 dark:text-sky-400 font-semibold">
                 {TITLE_LABEL}
@@ -74,9 +73,10 @@ export function Hero() {
             {/* Who I Am Section */}
             <motion.div
               className="space-y-4"
-              initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={isMobile ? { duration: 0 } : { duration: 0.5, ease: 'easeOut', delay: 0.08 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.5, ease: 'easeOut', delay: 0.08 }}
             >
               <p className="text-xs uppercase tracking-[0.15em] text-orange-600 dark:text-orange-400 font-semibold">
                 {WHO_I_AM_CONTENT.label}
@@ -108,13 +108,13 @@ export function Hero() {
             {/* Avatar Orb */}
             <motion.div
               className="flex items-center justify-center"
-              initial={isMobile ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
               animate={{
-                opacity: 1,
-                scale: 1,
-                y: isMobile ? 0 : [0, -8, 0],
+                y: [0, -8, 0],
               }}
-              transition={isMobile ? { duration: 0 } : {
+              transition={{
                 opacity: { duration: 0.8, ease: 'easeOut', delay: 0.1 },
                 scale: { duration: 0.8, ease: 'easeOut', delay: 0.1 },
                 y: {
@@ -125,8 +125,8 @@ export function Hero() {
               }}
             >
               <div className="relative flex items-center justify-center">
-                {/* Creative floating particles/sparkles - Disabled on mobile */}
-                {!isMobile && [...Array(6)].map((_, i) => (
+                {/* Creative floating particles/sparkles */}
+                {[...Array(6)].map((_, i) => (
                   <motion.div
                     key={i}
                     className="absolute w-2 h-2 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 opacity-60"
@@ -148,9 +148,8 @@ export function Hero() {
                   />
                 ))}
 
-                {/* Enhanced Gradient Blobs - Disabled on mobile */}
-                {!isMobile && (
-                  <>
+                {/* Enhanced Gradient Blobs */}
+                <>
                     <motion.div 
                       className="absolute -bottom-8 -left-8 h-48 w-48 rounded-full bg-gradient-to-r from-blue-400/40 via-purple-400/40 to-pink-400/40 blur-3xl"
                       animate={{
@@ -210,8 +209,7 @@ export function Hero() {
                     >
                       <div className="h-full w-full rounded-full bg-transparent" />
                     </motion.div>
-                  </>
-                )}
+                </>
 
                 {/* Main Orb Circle with enhanced styling */}
                 <div className="relative h-56 w-56 md:h-64 md:w-64 rounded-full bg-gradient-to-br from-white via-white to-blue-50/30 dark:from-stone-900 dark:via-stone-900 dark:to-blue-950/30 shadow-[0_0_0_1px_rgba(59,130,246,0.1),0_25px_70px_rgba(59,130,246,0.2),0_0_100px_rgba(139,92,246,0.15)] dark:shadow-[0_0_0_1px_rgba(139,92,246,0.2),0_25px_70px_rgba(139,92,246,0.3),0_0_100px_rgba(139,92,246,0.2)] backdrop-blur-xl overflow-hidden flex items-center justify-center border-2 border-white/50 dark:border-stone-700/50 hover:shadow-[0_0_0_2px_rgba(59,130,246,0.2),0_35px_100px_rgba(59,130,246,0.3),0_0_120px_rgba(139,92,246,0.2)] dark:hover:shadow-[0_0_0_2px_rgba(139,92,246,0.3),0_35px_100px_rgba(139,92,246,0.4),0_0_120px_rgba(139,92,246,0.3)] transition-all duration-700 group z-10">
@@ -222,7 +220,7 @@ export function Hero() {
                   <div className="absolute inset-0 rounded-full bg-gradient-to-t from-blue-500/10 via-transparent to-purple-500/10 pointer-events-none" />
                   
                   <Image
-                    src="/hero/avatar.webp"
+                    src={assetPath('/hero/avatar.webp')}
                     alt="Creative portrait of Calvin Kattathara"
                     width={240}
                     height={240}
@@ -237,27 +235,24 @@ export function Hero() {
 
             {/* Info Box */}
             <motion.div
-              initial={isMobile ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={isMobile ? { duration: 0 } : { delay: 0.3, duration: 0.6 }}
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ delay: 0.3, duration: 0.6 }}
             >
               <div className="relative">
-                {/* Enhanced blurred gradient background - Static on mobile */}
-                {!isMobile ? (
-                  <motion.div 
-                    className="absolute -inset-3 bg-gradient-to-br from-purple-200/40 via-pink-200/30 to-orange-200/40 dark:from-purple-900/25 dark:via-pink-900/15 dark:to-orange-900/20 rounded-2xl blur-2xl"
-                    animate={{
-                      opacity: [0.6, 0.8, 0.6],
-                    }}
-                    transition={{
-                      duration: 4,
-                      repeat: Infinity,
-                      ease: 'easeInOut',
-                    }}
-                  />
-                ) : (
-                  <div className="absolute -inset-3 bg-gradient-to-br from-purple-200/40 via-pink-200/30 to-orange-200/40 dark:from-purple-900/25 dark:via-pink-900/15 dark:to-orange-900/20 rounded-2xl blur-2xl opacity-70" />
-                )}
+                {/* Enhanced blurred gradient background */}
+                <motion.div 
+                  className="absolute -inset-3 bg-gradient-to-br from-purple-200/40 via-pink-200/30 to-orange-200/40 dark:from-purple-900/25 dark:via-pink-900/15 dark:to-orange-900/20 rounded-2xl blur-2xl"
+                  animate={{
+                    opacity: [0.6, 0.8, 0.6],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
+                />
                 
                 {/* Enhanced glassmorphism card */}
                 <div className="relative bg-gradient-to-br from-white/80 via-white/75 to-blue-50/30 dark:from-stone-900/80 dark:via-stone-900/75 dark:to-blue-950/30 backdrop-blur-xl rounded-2xl p-6 border border-white/70 dark:border-stone-700/70 shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_48px_rgba(139,92,246,0.15)] dark:hover:shadow-[0_12px_48px_rgba(139,92,246,0.25)] hover:border-purple-200/80 dark:hover:border-purple-700/80 transition-all duration-500 group/card">
