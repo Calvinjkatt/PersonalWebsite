@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useMobileOptimization } from '@/hooks/useMobileOptimization';
-import { assetPath } from '@/lib/paths';
 
 // ============================================
 // HERO CONTENT
@@ -223,7 +222,7 @@ export function Hero() {
                   <div className="absolute inset-0 rounded-full bg-gradient-to-t from-blue-500/10 via-transparent to-purple-500/10 pointer-events-none" />
                   
                   <Image
-                    src={assetPath('/hero/avatar.webp')}
+                    src="/hero/avatar.webp"
                     alt="Creative portrait of Calvin Kattathara"
                     width={240}
                     height={240}
