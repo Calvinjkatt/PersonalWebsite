@@ -270,21 +270,21 @@ export function Skills() {
         </motion.div>
 
         {/* Desktop: Interactive 3-way selector container (horizontal) */}
-        <div className="hidden lg:block relative flex items-center justify-center px-4 md:px-8 min-h-[500px] md:min-h-[600px] w-full max-w-6xl mx-auto overflow-visible">
+        <div className="hidden lg:flex relative items-center justify-center px-4 md:px-8 min-h-[500px] md:min-h-[600px] w-full max-w-6xl mx-auto overflow-hidden">
           {skillGalaxies.map((galaxy, index) => {
             const position = getPosition(index);
             const isSelected = getIsSelected(index);
-            
+
             // Calculate horizontal position - spread them out more
             let xPosition = 0;
             if (position === 'left') {
-              xPosition = -320; // Move to left (more spread)
+              xPosition = -380; // Move to left (more spread)
             } else if (position === 'right') {
-              xPosition = 320; // Move to right (more spread)
+              xPosition = 380; // Move to right (more spread)
             } else {
               xPosition = 0; // Center
             }
-            
+
             return (
               <motion.div
                 key={`${galaxy.title}-${positions.join('-')}`}
@@ -292,8 +292,8 @@ export function Skills() {
                 initial={false}
                 animate={{
                   x: `calc(-50% + ${xPosition}px)`,
-                  scale: isSelected ? 1 : 0.75,
-                  opacity: isSelected ? 1 : 0.65,
+                  scale: isSelected ? 1 : 0.6,
+                  opacity: isSelected ? 1 : 0.35,
                   rotate: position === 'left' ? -8 : position === 'right' ? 8 : 0,
                   zIndex: isSelected ? 30 : position === 'left' ? 20 : 10,
                 }}
