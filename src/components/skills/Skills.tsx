@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useMobileOptimization } from '@/hooks/useMobileOptimization';
 
 // ============================================
 // SKILL GALAXIES DATA
@@ -38,9 +39,10 @@ interface SkillGalaxyProps {
   isSelected: boolean;
   onClick: () => void;
   position: 'left' | 'center' | 'right';
+  shouldReduceMotion?: boolean;
 }
 
-function SkillGalaxy({ title, center, gradient, skills, isSelected, onClick, position }: SkillGalaxyProps) {
+function SkillGalaxy({ title, center, gradient, skills, isSelected, onClick, position, shouldReduceMotion = false }: SkillGalaxyProps) {
   // Different position patterns for each galaxy to create variety
   const positionSets = [
     // Pattern 1: Top, bottom-left, bottom-right, top-right
@@ -107,10 +109,10 @@ function SkillGalaxy({ title, center, gradient, skills, isSelected, onClick, pos
           animate={{
             scale: isSelected ? 1 : 0.75,
             opacity: isSelected ? 1 : 0.6,
-            rotate: isSelected ? [0, 2, -2, 0] : 0,
+            rotate: isSelected && !shouldReduceMotion ? [0, 2, -2, 0] : 0,
           }}
-          transition={{ 
-            scale: { 
+          transition={{
+            scale: {
               type: 'spring',
               stiffness: 200,
               damping: 20,
@@ -126,36 +128,36 @@ function SkillGalaxy({ title, center, gradient, skills, isSelected, onClick, pos
             },
           }}
         >
-        {/* orbit rings - Darker for visibility, animate opacity and subtle rotation */}
+        {/* orbit rings - Darker for visibility, animate opacity and subtle rotation (disabled on mobile) */}
         <motion.div
           className="absolute inset-10 rounded-full border border-stone-300 dark:border-stone-600"
-          animate={{ 
+          animate={{
             opacity: isSelected ? 1 : 0.4,
-            rotate: isSelected ? [0, 360] : 0,
+            rotate: isSelected && !shouldReduceMotion ? [0, 360] : 0,
           }}
-          transition={{ 
+          transition={{
             opacity: { duration: 0.4, ease: 'easeInOut' },
             rotate: { duration: 20, repeat: Infinity, ease: 'linear' },
           }}
         />
         <motion.div
           className="absolute inset-6 rounded-full border border-stone-300 dark:border-stone-600"
-          animate={{ 
+          animate={{
             opacity: isSelected ? 1 : 0.4,
-            rotate: isSelected ? [0, -360] : 0,
+            rotate: isSelected && !shouldReduceMotion ? [0, -360] : 0,
           }}
-          transition={{ 
+          transition={{
             opacity: { duration: 0.4, ease: 'easeInOut' },
             rotate: { duration: 25, repeat: Infinity, ease: 'linear' },
           }}
         />
         <motion.div
           className="absolute inset-2 rounded-full border border-stone-300 dark:border-stone-600"
-          animate={{ 
+          animate={{
             opacity: isSelected ? 1 : 0.4,
-            rotate: isSelected ? [0, 360] : 0,
+            rotate: isSelected && !shouldReduceMotion ? [0, 360] : 0,
           }}
-          transition={{ 
+          transition={{
             opacity: { duration: 0.4, ease: 'easeInOut' },
             rotate: { duration: 30, repeat: Infinity, ease: 'linear' },
           }}
@@ -206,6 +208,7 @@ export function Skills() {
   // Track position of each galaxy: [leftIndex, centerIndex, rightIndex]
   // Default: [0=Python, 1=Java, 2=React]
   const [positions, setPositions] = useState<[number, number, number]>([0, 1, 2]);
+  const { shouldReduceMotion } = useMobileOptimization();
 
   const handleSelect = (clickedIndex: number) => {
     const [leftIndex, centerIndex, rightIndex] = positions;
@@ -314,6 +317,7 @@ export function Skills() {
                   isSelected={isSelected}
                   onClick={() => handleSelect(index)}
                   position={position}
+                  shouldReduceMotion={shouldReduceMotion}
                 />
               </motion.div>
             );
@@ -342,6 +346,7 @@ export function Skills() {
                   isSelected={isSelected}
                   onClick={() => handleSelect(index)}
                   position="center"
+                  shouldReduceMotion={shouldReduceMotion}
                 />
               </motion.div>
             );

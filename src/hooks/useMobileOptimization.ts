@@ -2,70 +2,89 @@
 
 import { useState, useEffect } from 'react';
 
-/**
- * Hook to detect mobile devices and optimize animations
- * Returns true for mobile devices to reduce animations for better performance
- * Safe for SSR - defaults to false and updates on client mount
- */
-export function useMobileOptimization(): boolean {
-  // Default to false to prevent hydration mismatches
-  // Will be updated on client-side mount
-  const [isMobile, setIsMobile] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    // Mark as mounted on client
-    setMounted(true);
-    
-    // Check if device is mobile
-    const checkMobile = () => {
-      if (typeof window === 'undefined') return false;
-      
-      try {
-        const userAgent = navigator?.userAgent || '';
-        const isMobileDevice = 
-          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent) ||
-          (window.innerWidth < 768);
-        
-        setIsMobile(isMobileDevice);
-        return isMobileDevice;
-      } catch (error) {
-        // Fallback to false if there's any error
-        setIsMobile(false);
-        return false;
-      }
-    };
-
-    // Initial check
-    checkMobile();
-    
-    // Listen for resize events
-    if (typeof window !== 'undefined') {
-      window.addEventListener('resize', checkMobile);
-      
-      return () => {
-        window.removeEventListener('resize', checkMobile);
-      };
-    }
-  }, []);
-
-  // Return false during SSR and initial render to prevent hydration issues
-  // Only return actual mobile status after client-side mount
-  return mounted ? isMobile : false;
+interface MobileOptimizationResult {
+  isMobile: boolean;
+  prefersReducedMotion: boolean;
+  shouldReduceMotion: boolean;
 }
 
 /**
- * Get animation props optimized for mobile
- * Returns minimal/static animations on mobile, full animations on desktop
+ * Hook to detect mobile devices and prefers-reduced-motion setting
+ * Returns shouldReduceMotion = true when either:
+ * - Device is mobile (for performance)
+ * - User has prefers-reduced-motion enabled (for accessibility)
+ * Safe for SSR - defaults to false and updates on client mount
  */
-export function getMobileOptimizedAnimation(isMobile: boolean) {
-  if (isMobile) {
+export function useMobileOptimization(): MobileOptimizationResult {
+  const [isMobile, setIsMobile] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+
+    // Check if device is mobile
+    const checkMobile = () => {
+      if (typeof window === 'undefined') return;
+
+      try {
+        const userAgent = navigator?.userAgent || '';
+        const isMobileDevice =
+          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent) ||
+          (window.innerWidth < 768);
+
+        setIsMobile(isMobileDevice);
+      } catch {
+        setIsMobile(false);
+      }
+    };
+
+    // Check prefers-reduced-motion
+    const checkReducedMotion = () => {
+      if (typeof window === 'undefined') return;
+
+      try {
+        const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+        setPrefersReducedMotion(mediaQuery.matches);
+
+        // Listen for changes to the preference
+        const handleChange = (e: MediaQueryListEvent) => {
+          setPrefersReducedMotion(e.matches);
+        };
+
+        mediaQuery.addEventListener('change', handleChange);
+        return () => mediaQuery.removeEventListener('change', handleChange);
+      } catch {
+        setPrefersReducedMotion(false);
+      }
+    };
+
+    // Initial checks
+    checkMobile();
+    const cleanupReducedMotion = checkReducedMotion();
+
+    // Listen for resize events (for mobile detection)
+    window.addEventListener('resize', checkMobile);
+
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      cleanupReducedMotion?.();
+    };
+  }, []);
+
+  // Return safe defaults during SSR
+  if (!mounted) {
     return {
-      initial: { opacity: 1, y: 0 },
-      animate: { opacity: 1, y: 0 },
-      transition: { duration: 0 },
+      isMobile: false,
+      prefersReducedMotion: false,
+      shouldReduceMotion: false,
     };
   }
-  return undefined; // Use default animations
+
+  return {
+    isMobile,
+    prefersReducedMotion,
+    shouldReduceMotion: isMobile || prefersReducedMotion,
+  };
 }
 

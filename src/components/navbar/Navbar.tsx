@@ -16,14 +16,44 @@ const navItems = [
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
   const { theme, toggleTheme } = useTheme();
 
+  // Handle scroll state for navbar background
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Track active section with Intersection Observer
+  useEffect(() => {
+    const sectionIds = navItems.map(item => item.href.replace('#', ''));
+    const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -60% 0px', // Trigger when section is in upper-middle of viewport
+      threshold: 0,
+    };
+
+    const observerCallback: IntersectionObserverCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    sections.forEach((section) => {
+      if (section) observer.observe(section);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   const handleNavClick = (href: string) => {
@@ -73,22 +103,39 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
-            {navItems.map((item) => (
-              <motion.a
-                key={item.name}
-                href={item.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavClick(item.href);
-                }}
-                className="px-4 py-2 text-sm font-medium text-stone-700 dark:text-stone-300 rounded-lg hover:text-blue-600 dark:hover:text-blue-400 transition-colors relative group"
-                whileHover={{ y: -2 }}
-                whileTap={{ y: 0 }}
-              >
-                {item.name}
-                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
-              </motion.a>
-            ))}
+            {navItems.map((item) => {
+              const isActive = activeSection === item.href.replace('#', '');
+              return (
+                <motion.a
+                  key={item.name}
+                  href={item.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavClick(item.href);
+                  }}
+                  className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors relative group ${
+                    isActive
+                      ? 'text-blue-600 dark:text-blue-400'
+                      : 'text-stone-700 dark:text-stone-300 hover:text-blue-600 dark:hover:text-blue-400'
+                  }`}
+                  whileHover={{ y: -2 }}
+                  whileTap={{ y: 0 }}
+                >
+                  {item.name}
+                  {/* Active/hover underline */}
+                  <motion.span
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 origin-left"
+                    initial={false}
+                    animate={{ scaleX: isActive ? 1 : 0 }}
+                    transition={{ duration: 0.2 }}
+                  />
+                  {/* Hover underline (only shows when not active) */}
+                  {!isActive && (
+                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
+                  )}
+                </motion.a>
+              );
+            })}
           </div>
 
           {/* Right side - Theme Toggle & Mobile Menu */}
@@ -172,22 +219,32 @@ export function Navbar() {
             className="md:hidden overflow-hidden bg-white/95 dark:bg-stone-950/95 backdrop-blur-xl border-t border-stone-200/50 dark:border-stone-800/50"
           >
             <div className="px-6 py-4 space-y-1">
-              {navItems.map((item, index) => (
-                <motion.a
-                  key={item.name}
-                  href={item.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleNavClick(item.href);
-                  }}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.08 }}
-                  className="block px-4 py-3 text-base font-medium text-stone-700 dark:text-stone-300 rounded-lg active:bg-stone-200 dark:active:bg-stone-700 hover:bg-stone-100 dark:hover:bg-stone-800 hover:text-blue-600 dark:hover:text-blue-400 transition-colors touch-manipulation min-h-[44px] flex items-center"
-                >
-                  {item.name}
-                </motion.a>
-              ))}
+              {navItems.map((item, index) => {
+                const isActive = activeSection === item.href.replace('#', '');
+                return (
+                  <motion.a
+                    key={item.name}
+                    href={item.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavClick(item.href);
+                    }}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.08 }}
+                    className={`block px-4 py-3 text-base font-medium rounded-lg active:bg-stone-200 dark:active:bg-stone-700 transition-colors touch-manipulation min-h-[44px] flex items-center ${
+                      isActive
+                        ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30'
+                        : 'text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 hover:text-blue-600 dark:hover:text-blue-400'
+                    }`}
+                  >
+                    {isActive && (
+                      <span className="w-1 h-4 bg-gradient-to-b from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 rounded-full mr-3" />
+                    )}
+                    {item.name}
+                  </motion.a>
+                );
+              })}
             </div>
           </motion.div>
         )}

@@ -1,22 +1,50 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Mail, Github, Linkedin, Send, Sparkles } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Mail, Github, Linkedin, Send, Sparkles, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+
+type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
 
 export function Contact() {
-  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: '',
   });
+  const [status, setStatus] = useState<FormStatus>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Form submission handled - can be connected to email service or API
-    // For now, form resets after submission
-    setFormData({ name: '', email: '', message: '' });
+    setStatus('submitting');
+    setErrorMessage('');
+
+    try {
+      const response = await fetch('https://formspree.io/f/mldqkplw', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setStatus('success');
+        setFormData({ name: '', email: '', message: '' });
+        // Reset to idle after 5 seconds so user can send another message
+        setTimeout(() => setStatus('idle'), 5000);
+      } else {
+        const data = await response.json();
+        throw new Error(data.error || 'Something went wrong');
+      }
+    } catch (error) {
+      setStatus('error');
+      setErrorMessage(error instanceof Error ? error.message : 'Failed to send message. Please try again.');
+      // Reset to idle after 5 seconds
+      setTimeout(() => setStatus('idle'), 5000);
+    }
   };
 
   const handleChange = (
@@ -162,13 +190,67 @@ export function Contact() {
 
               <motion.button
                 type="submit"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full px-8 py-3.5 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-500 dark:via-purple-500 dark:to-pink-500 text-white rounded-full shadow-lg hover:shadow-xl hover:shadow-purple-500/25 transition-all duration-300 flex items-center justify-center gap-2.5 group hover:scale-[1.02] active:scale-[0.98] font-semibold text-base"
+                disabled={status === 'submitting'}
+                whileHover={status === 'idle' ? { scale: 1.03 } : {}}
+                whileTap={status === 'idle' ? { scale: 0.98 } : {}}
+                className={`w-full px-8 py-3.5 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center gap-2.5 group font-semibold text-base ${
+                  status === 'submitting'
+                    ? 'bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 cursor-not-allowed'
+                    : status === 'success'
+                    ? 'bg-gradient-to-r from-green-500 to-emerald-600'
+                    : status === 'error'
+                    ? 'bg-gradient-to-r from-red-500 to-rose-600'
+                    : 'bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-500 dark:via-purple-500 dark:to-pink-500 hover:shadow-xl hover:shadow-purple-500/25'
+                } text-white`}
               >
-                <span>Send Message</span>
-                <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                {status === 'submitting' ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <span>Sending...</span>
+                  </>
+                ) : status === 'success' ? (
+                  <>
+                    <CheckCircle className="w-5 h-5" />
+                    <span>Message Sent!</span>
+                  </>
+                ) : status === 'error' ? (
+                  <>
+                    <AlertCircle className="w-5 h-5" />
+                    <span>Try Again</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Send Message</span>
+                    <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </>
+                )}
               </motion.button>
+
+              {/* Status feedback message */}
+              <AnimatePresence mode="wait">
+                {status === 'success' && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="flex items-center gap-2 p-4 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 rounded-xl text-green-700 dark:text-green-300"
+                  >
+                    <CheckCircle className="w-5 h-5 flex-shrink-0" />
+                    <p className="text-sm">Thanks for reaching out! I&apos;ll get back to you within 24 hours.</p>
+                  </motion.div>
+                )}
+                {status === 'error' && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="flex items-center gap-2 p-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-xl text-red-700 dark:text-red-300"
+                  >
+                    <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                    <p className="text-sm">{errorMessage}</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </form>
           </motion.div>
 

@@ -2,39 +2,15 @@
 
 import { motion } from 'framer-motion';
 import { useTheme } from '@/contexts/ThemeContext';
-import { useMemo } from 'react';
-
-// Deterministic star positions
-const generateStarData = (count: number) => {
-  return Array.from({ length: count }, (_, i) => {
-    const seed = i * 2654435761;
-    const hash = (seed: number) => {
-      let n = seed;
-      n = (n << 13) ^ n;
-      return ((n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff) / 2147483648.0;
-    };
-    
-    return {
-      size: hash(seed) * 1.5 + 0.5,
-      delay: hash(seed + 1) * 5,
-      duration: hash(seed + 2) * 4 + 3,
-      x: hash(seed + 3) * 100,
-      y: hash(seed + 4) * 100,
-    };
-  });
-};
+import { useMobileOptimization } from '@/hooks/useMobileOptimization';
 
 export function AnimatedBackground() {
   const { theme } = useTheme();
   const isLight = theme === 'light';
+  const { shouldReduceMotion } = useMobileOptimization();
 
-  // Check for reduced motion preference
-  const prefersReducedMotion = useMemo(() => {
-    if (typeof window === 'undefined') return false;
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  }, []);
-
-  if (prefersReducedMotion) {
+  // Render static background on mobile or when user prefers reduced motion
+  if (shouldReduceMotion) {
     return (
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-br from-white via-blue-50/15 to-purple-50/10 dark:from-stone-950 dark:via-blue-950/20 dark:to-purple-950/10" />

@@ -2,8 +2,9 @@
 
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Code, Database, Layers, Zap, TestTube, GitBranch } from 'lucide-react';
+import { Code } from 'lucide-react';
 import { assetPath } from '@/lib/paths';
+import { useMobileOptimization } from '@/hooks/useMobileOptimization';
 
 // ============================================
 // EXPERIENCE TYPE
@@ -117,14 +118,13 @@ const getColorClasses = (color: string) => {
 // EXPERIENCE COMPONENT
 // ============================================
 export function Experience() {
-  
   const ref = useRef<HTMLDivElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start center', 'end center'],
   });
-
   const pathLength = useTransform(scrollYProgress, [0, 1], [0, 1]);
+  const { shouldReduceMotion } = useMobileOptimization();
 
   return (
     <section
@@ -346,8 +346,8 @@ export function Experience() {
                       </div>
                     </motion.div>
 
-                    {/* Floating background shape - Disabled on mobile */}
-                    {(
+                    {/* Floating background shape - disabled on mobile/reduced motion */}
+                    {!shouldReduceMotion && (
                       <motion.div
                         animate={{
                           rotate: [0, 360],
