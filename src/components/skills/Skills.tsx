@@ -215,7 +215,7 @@ export function Skills() {
 
               {/* Skills */}
               <div className="flex flex-wrap gap-2 mt-auto">
-                {['Python', 'NumPy', 'Pandas', 'Scikit-learn', 'LangChain'].map((skill, i) => (
+                {['Python', 'NumPy', 'Pandas', 'Scikit-learn', 'LangChain', 'Gemini AI', 'Claude'].map((skill, i) => (
                   <SkillPill key={skill} skill={skill} gradient="from-blue-500 to-cyan-500" delay={0.1 + i * 0.05} />
                 ))}
               </div>
@@ -233,7 +233,7 @@ export function Skills() {
                 <h3 className="text-lg font-bold text-stone-900 dark:text-stone-50">Backend & APIs</h3>
               </div>
               <div className="flex flex-wrap gap-2">
-                {['Java', 'Node.js', 'Spring Boot', 'FastAPI', 'SQL'].map((skill, i) => (
+                {['Java', 'C#', '.NET', 'Node.js', 'Spring Boot', 'FastAPI', 'SQL'].map((skill, i) => (
                   <SkillPill key={skill} skill={skill} gradient="from-purple-500 to-pink-500" delay={0.15 + i * 0.05} />
                 ))}
               </div>
@@ -270,7 +270,7 @@ export function Skills() {
                 <h3 className="text-lg font-bold text-stone-900 dark:text-stone-50">Frontend & UI</h3>
               </div>
               <div className="flex flex-wrap gap-2">
-                {['React', 'Tailwind CSS', 'Redux', 'Next.js', 'Figma'].map((skill, i) => (
+                {['JavaScript', 'React', 'Next.js', 'Tailwind CSS', 'Redux', 'Figma'].map((skill, i) => (
                   <SkillPill key={skill} skill={skill} gradient="from-pink-500 to-orange-500" delay={0.35 + i * 0.05} />
                 ))}
               </div>
