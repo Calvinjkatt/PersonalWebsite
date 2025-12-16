@@ -4,64 +4,66 @@ import { motion } from 'framer-motion';
 import { Brain, Server, Layout, TrendingUp, Terminal, Database, Sparkles } from 'lucide-react';
 
 // ============================================
-// ANIMATED MINI LINE CHART
+// ANIMATED DASHBOARD CHART
 // ============================================
 function AnimatedChart() {
+  const bars = [
+    { height: 35, delay: 0 },
+    { height: 55, delay: 0.1 },
+    { height: 42, delay: 0.2 },
+    { height: 68, delay: 0.3 },
+    { height: 52, delay: 0.4 },
+    { height: 78, delay: 0.5 },
+    { height: 62, delay: 0.6 },
+  ];
+
   return (
-    <svg viewBox="0 0 200 80" className="w-full h-20" preserveAspectRatio="none">
-      <defs>
-        <linearGradient id="chartGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="rgb(236, 72, 153)" stopOpacity="0.4" />
-          <stop offset="100%" stopColor="rgb(249, 115, 22)" stopOpacity="0.1" />
-        </linearGradient>
-        <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="rgb(236, 72, 153)" />
-          <stop offset="100%" stopColor="rgb(249, 115, 22)" />
-        </linearGradient>
-      </defs>
-      {/* Area fill */}
-      <motion.path
-        d="M 0 60 Q 30 50 50 45 T 100 35 T 150 25 T 200 15 V 80 H 0 Z"
-        fill="url(#chartGradient)"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-      />
-      {/* Line */}
-      <motion.path
-        d="M 0 60 Q 30 50 50 45 T 100 35 T 150 25 T 200 15"
-        fill="none"
-        stroke="url(#lineGradient)"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        initial={{ pathLength: 0 }}
-        whileInView={{ pathLength: 1 }}
+    <div className="relative w-full h-24">
+      {/* Grid lines */}
+      <div className="absolute inset-0 flex flex-col justify-between py-2 pointer-events-none">
+        {[0, 1, 2, 3].map((i) => (
+          <div key={i} className="w-full h-px bg-stone-200/50 dark:bg-stone-700/30" />
+        ))}
+      </div>
+
+      {/* Bar chart */}
+      <div className="relative h-full flex items-end justify-between gap-2 px-1">
+        {bars.map((bar, i) => (
+          <motion.div
+            key={i}
+            className="flex-1 rounded-t-md bg-gradient-to-t from-pink-500 to-orange-400 relative overflow-hidden"
+            initial={{ height: 0 }}
+            whileInView={{ height: `${bar.height}%` }}
+            viewport={{ once: true }}
+            transition={{
+              duration: 0.8,
+              delay: bar.delay,
+              ease: [0.23, 1, 0.32, 1]
+            }}
+          >
+            {/* Shine effect */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+              initial={{ x: '-100%' }}
+              whileInView={{ x: '200%' }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, delay: bar.delay + 0.5 }}
+            />
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Floating percentage badge */}
+      <motion.div
+        className="absolute top-0 right-0 px-2 py-1 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full text-white text-xs font-bold shadow-lg"
+        initial={{ opacity: 0, scale: 0.5, y: 10 }}
+        whileInView={{ opacity: 1, scale: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 1.5, ease: "easeOut" }}
-      />
-      {/* Data points */}
-      {[
-        { cx: 0, cy: 60 },
-        { cx: 50, cy: 45 },
-        { cx: 100, cy: 35 },
-        { cx: 150, cy: 25 },
-        { cx: 200, cy: 15 },
-      ].map((point, i) => (
-        <motion.circle
-          key={i}
-          cx={point.cx}
-          cy={point.cy}
-          r="4"
-          fill="white"
-          stroke="rgb(236, 72, 153)"
-          strokeWidth="2"
-          initial={{ scale: 0 }}
-          whileInView={{ scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 + i * 0.15, duration: 0.3 }}
-        />
-      ))}
-    </svg>
+        transition={{ delay: 1, duration: 0.4, type: "spring" }}
+      >
+        +24%
+      </motion.div>
+    </div>
   );
 }
 
