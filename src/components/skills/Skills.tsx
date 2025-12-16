@@ -90,8 +90,8 @@ function CodeSnippet() {
           transition={{ delay: i * 0.1, duration: 0.3 }}
           style={{ paddingLeft: `${line.indent * 16}px` }}
         >
-          <span className="text-purple-400">{line.text}</span>
-          <span className="text-stone-300">{line.rest}</span>
+          <span className="text-pink-400 font-semibold">{line.text}</span>
+          <span className="text-stone-100">{line.rest}</span>
         </motion.div>
       ))}
     </div>
