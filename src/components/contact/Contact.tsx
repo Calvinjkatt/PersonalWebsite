@@ -65,8 +65,8 @@ export function Contact() {
     },
     {
       icon: Linkedin,
-      label: 'linkedin.com/in/calvin-kattathara',
-      link: 'https://linkedin.com/in/calvin-kattathara',
+      label: 'linkedin.com/in/calvin-k',
+      link: 'https://www.linkedin.com/in/calvin-k-2502a5261/',
       color: 'from-blue-600 to-blue-700',
     },
     {
