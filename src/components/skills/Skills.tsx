@@ -247,10 +247,10 @@ export function Skills() {
           </BentoCard>
 
           {/* Code Snippet Card */}
-          <BentoCard className="col-span-2 md:col-span-1 row-span-1 bg-stone-900 dark:bg-stone-950 border-stone-700" delay={0.2}>
+          <BentoCard className="col-span-2 md:col-span-1 row-span-1 !bg-stone-900 dark:!bg-stone-950 border-stone-700" delay={0.2}>
             <div className="flex items-center gap-2 mb-3">
               <Terminal className="w-4 h-4 text-green-400" />
-              <span className="text-xs text-stone-400 font-mono">skills.ts</span>
+              <span className="text-xs text-green-400 font-mono font-medium">skills.ts</span>
             </div>
             <CodeSnippet />
           </BentoCard>
