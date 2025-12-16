@@ -1,203 +1,135 @@
 'use client';
 
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useMobileOptimization } from '@/hooks/useMobileOptimization';
+import { Brain, Server, Layout, TrendingUp } from 'lucide-react';
 
 // ============================================
-// SKILL GALAXIES DATA
+// SKILLS DATA
 // ============================================
-const skillGalaxies = [
+const skillCategories = [
   {
     title: 'Data Science & ML',
-    center: 'Python',
+    icon: Brain,
     gradient: 'from-blue-500 to-cyan-500',
-    skills: ['NumPy', 'Pandas', 'Scikit-learn', 'LangChain'],
+    bgGradient: 'from-blue-500/10 to-cyan-500/10',
+    skills: ['Python', 'NumPy', 'Pandas', 'Scikit-learn', 'LangChain'],
   },
   {
     title: 'Backend & APIs',
-    center: 'Java',
+    icon: Server,
     gradient: 'from-purple-500 to-pink-500',
-    skills: ['Node.js', 'Spring Boot', 'FastAPI', 'SQL'],
+    bgGradient: 'from-purple-500/10 to-pink-500/10',
+    skills: ['Java', 'Node.js', 'Spring Boot', 'FastAPI', 'SQL'],
   },
   {
     title: 'Frontend & UI',
-    center: 'React',
+    icon: Layout,
     gradient: 'from-pink-500 to-orange-500',
-    skills: ['Tailwind CSS', 'Redux', 'Next.js', 'Figma'],
+    bgGradient: 'from-pink-500/10 to-orange-500/10',
+    skills: ['React', 'Tailwind CSS', 'Redux', 'Next.js', 'Figma'],
   },
-] as const;
+];
 
 // ============================================
-// SKILL GALAXY COMPONENT
+// DECORATIVE MINI CHART SVG
 // ============================================
-interface SkillGalaxyProps {
-  title: string;
-  center: string;
-  gradient: string; // Tailwind gradient utility, e.g. "from-blue-500 to-cyan-500"
-  skills: readonly string[] | string[];
-  isSelected: boolean;
-  onClick: () => void;
-  position: 'left' | 'center' | 'right';
-  shouldReduceMotion?: boolean;
+function MiniChart({ gradient }: { gradient: string }) {
+  return (
+    <svg
+      viewBox="0 0 100 40"
+      className="w-24 h-10 opacity-30"
+      preserveAspectRatio="none"
+    >
+      <defs>
+        <linearGradient id={`chart-${gradient}`} x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" className="[stop-color:currentColor]" stopOpacity="0.8" />
+          <stop offset="100%" className="[stop-color:currentColor]" stopOpacity="0.2" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M 0 35 Q 15 30 25 25 T 50 20 T 75 15 T 100 8"
+        fill="none"
+        stroke={`url(#chart-${gradient})`}
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M 0 35 Q 15 30 25 25 T 50 20 T 75 15 T 100 8 V 40 H 0 Z"
+        fill={`url(#chart-${gradient})`}
+        opacity="0.15"
+      />
+    </svg>
+  );
 }
 
-function SkillGalaxy({ title, center, gradient, skills, isSelected, onClick, position, shouldReduceMotion = false }: SkillGalaxyProps) {
-  // Different position patterns for each galaxy to create variety
-  const positionSets = [
-    // Pattern 1: Top, bottom-left, bottom-right, top-right
-    [
-      'top-4 left-1/2 -translate-x-1/2',
-      'bottom-6 left-6',
-      'bottom-10 right-4',
-      'top-12 right-6',
-    ],
-    // Pattern 2: Right, bottom-left, top-left, bottom-right (rotated 90deg)
-    [
-      'right-6 top-1/2 -translate-y-1/2',
-      'bottom-6 left-8',
-      'top-8 left-6',
-      'bottom-12 right-6',
-    ],
-    // Pattern 3: Top, bottom-left, bottom-right (optimized for 3 skills)
-    [
-      'top-6 left-1/2 -translate-x-1/2',
-      'bottom-8 left-8',
-      'bottom-8 right-8',
-      'top-10 right-10', // Fallback for 4 skills if needed
-    ],
-  ];
+// ============================================
+// SKILL CARD COMPONENT
+// ============================================
+interface SkillCardProps {
+  title: string;
+  icon: React.ElementType;
+  gradient: string;
+  bgGradient: string;
+  skills: string[];
+  index: number;
+}
 
-  // Use different pattern based on center skill to create variety
-  const patternIndex =
-    center === 'Python' ? 0 : center === 'Java' ? 1 : 2;
-  const positions = positionSets[patternIndex] ?? positionSets[0];
-
-  // Responsive sizes - smaller on mobile for better fit
-  const sizeClass = 'h-56 w-56 sm:h-64 sm:w-64 md:h-72 md:w-72 lg:h-80 lg:w-80';
-  const centerPlanetSize = 'h-24 w-24 sm:h-28 sm:w-28 md:h-32 md:w-32';
-  const centerPlanetText = 'text-base sm:text-lg md:text-xl font-bold';
-  const orbitSkillSize = 'h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16';
-  const orbitSkillText = 'text-[10px] sm:text-xs md:text-sm';
-
+function SkillCard({ title, icon: Icon, gradient, bgGradient, skills, index }: SkillCardProps) {
   return (
-    <motion.button
-      onClick={onClick}
-      className="flex flex-col items-center gap-4 sm:gap-6 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 rounded-2xl p-3 sm:p-4 transition-all touch-manipulation"
-      whileHover={!isSelected ? { scale: 1.05 } : {}}
-      whileTap={{ scale: 0.98 }}
-      layout
-      transition={{ duration: 0.5, ease: 'easeInOut' }}
-      style={{ WebkitTapHighlightColor: 'transparent' }}
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      whileHover={{ y: -4 }}
+      className="group relative"
     >
-      <motion.span
-        className="text-xs sm:text-sm md:text-base tracking-[0.15em] sm:tracking-[0.2em] uppercase font-bold"
-        animate={{
-          opacity: isSelected ? 1 : 0.5,
-          color: isSelected ? 'rgb(28 25 23)' : 'rgb(120 113 108)',
-        }}
-        transition={{ duration: 0.3 }}
-      >
-        {title}
-      </motion.span>
-      <div className="relative mx-auto" style={{ width: 'fit-content' }}>
-        <motion.div 
-          className={`relative ${sizeClass}`}
-          style={{
-            transformOrigin: 'center center',
-          }}
-          animate={{
-            scale: isSelected ? 1 : 0.75,
-            opacity: isSelected ? 1 : 0.6,
-            rotate: isSelected && !shouldReduceMotion ? [0, 2, -2, 0] : 0,
-          }}
-          transition={{
-            scale: {
-              type: 'spring',
-              stiffness: 200,
-              damping: 20,
-              duration: 0.6,
-            },
-            rotate: {
-              duration: 4,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            },
-            opacity: {
-              duration: 0.4,
-            },
-          }}
-        >
-        {/* orbit rings - Darker for visibility, animate opacity and subtle rotation (disabled on mobile) */}
-        <motion.div
-          className="absolute inset-10 rounded-full border border-stone-300 dark:border-stone-600"
-          animate={{
-            opacity: isSelected ? 1 : 0.4,
-            rotate: isSelected && !shouldReduceMotion ? [0, 360] : 0,
-          }}
-          transition={{
-            opacity: { duration: 0.4, ease: 'easeInOut' },
-            rotate: { duration: 20, repeat: Infinity, ease: 'linear' },
-          }}
-        />
-        <motion.div
-          className="absolute inset-6 rounded-full border border-stone-300 dark:border-stone-600"
-          animate={{
-            opacity: isSelected ? 1 : 0.4,
-            rotate: isSelected && !shouldReduceMotion ? [0, -360] : 0,
-          }}
-          transition={{
-            opacity: { duration: 0.4, ease: 'easeInOut' },
-            rotate: { duration: 25, repeat: Infinity, ease: 'linear' },
-          }}
-        />
-        <motion.div
-          className="absolute inset-2 rounded-full border border-stone-300 dark:border-stone-600"
-          animate={{
-            opacity: isSelected ? 1 : 0.4,
-            rotate: isSelected && !shouldReduceMotion ? [0, 360] : 0,
-          }}
-          transition={{
-            opacity: { duration: 0.4, ease: 'easeInOut' },
-            rotate: { duration: 30, repeat: Infinity, ease: 'linear' },
-          }}
-        />
+      {/* Card */}
+      <div className={`relative bg-white/70 dark:bg-stone-900/70 backdrop-blur-xl rounded-2xl border border-stone-200/60 dark:border-stone-700/60 p-6 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden`}>
+        {/* Background gradient on hover */}
+        <div className={`absolute inset-0 bg-gradient-to-br ${bgGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
 
-        {/* center planet - perfectly centered */}
-        <div
-          className={`absolute left-1/2 top-1/2 flex ${centerPlanetSize} items-center justify-center rounded-full bg-gradient-to-br ${gradient} shadow-xl text-white z-10`}
-          style={{
-            transform: 'translate(-50%, -50%)',
-            margin: 0,
-            padding: 0,
-          }}
-        >
-          <span className={`${centerPlanetText} text-white whitespace-nowrap`}>{center}</span>
+        {/* Decorative chart in corner */}
+        <div className={`absolute top-4 right-4 text-transparent bg-gradient-to-r ${gradient} bg-clip-text`}>
+          <div className={`bg-gradient-to-r ${gradient} bg-clip-text`}>
+            <MiniChart gradient={gradient.replace('from-', '').split(' ')[0]} />
+          </div>
         </div>
 
-        {/* orbiting skills - static positions, centered, with better text */}
-        {skills.map((skill, index) => (
-          <motion.div
-            key={skill}
-            className={`absolute flex ${orbitSkillSize} items-center justify-center rounded-full bg-gradient-to-br ${gradient} shadow-lg text-white font-medium ${
-              positions[index] ?? ''
-            }`}
-            animate={{
-              opacity: isSelected ? 1 : 0.7,
-              scale: isSelected ? 1 : 0.9,
-            }}
-            transition={{
-              duration: 0.4,
-              delay: index * 0.05,
-              ease: 'easeInOut',
-            }}
-          >
-            <span className={`px-1.5 text-center text-white font-bold ${orbitSkillText}`}>{skill}</span>
-          </motion.div>
-        ))}
-        </motion.div>
+        {/* Content */}
+        <div className="relative">
+          {/* Header */}
+          <div className="flex items-center gap-3 mb-5">
+            <div className={`p-2.5 rounded-xl bg-gradient-to-br ${gradient} shadow-lg`}>
+              <Icon className="w-5 h-5 text-white" />
+            </div>
+            <h3 className="text-lg font-bold text-stone-900 dark:text-stone-50">
+              {title}
+            </h3>
+          </div>
+
+          {/* Skills as chips */}
+          <div className="flex flex-wrap gap-2">
+            {skills.map((skill, skillIndex) => (
+              <motion.span
+                key={skill}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.3, delay: index * 0.1 + skillIndex * 0.05 }}
+                whileHover={{ scale: 1.05, y: -2 }}
+                className={`px-3 py-1.5 text-sm font-medium rounded-full bg-gradient-to-r ${gradient} text-white shadow-sm hover:shadow-md transition-all cursor-default`}
+              >
+                {skill}
+              </motion.span>
+            ))}
+          </div>
+
+          {/* Decorative bottom accent */}
+          <div className={`mt-5 h-1 w-16 rounded-full bg-gradient-to-r ${gradient} opacity-60 group-hover:w-24 group-hover:opacity-100 transition-all duration-300`} />
+        </div>
       </div>
-    </motion.button>
+    </motion.div>
   );
 }
 
@@ -205,152 +137,53 @@ function SkillGalaxy({ title, center, gradient, skills, isSelected, onClick, pos
 // SKILLS COMPONENT
 // ============================================
 export function Skills() {
-  // Track position of each galaxy: [leftIndex, centerIndex, rightIndex]
-  // Default: [0=Python, 1=Java, 2=React]
-  const [positions, setPositions] = useState<[number, number, number]>([0, 1, 2]);
-  const { shouldReduceMotion } = useMobileOptimization();
-
-  const handleSelect = (clickedIndex: number) => {
-    const [leftIndex, centerIndex, rightIndex] = positions;
-    
-    // If clicking center, do nothing
-    if (clickedIndex === centerIndex) return;
-    
-    // Swap clicked with center
-    if (clickedIndex === leftIndex) {
-      // Left clicked -> swap with center
-      setPositions([centerIndex, leftIndex, rightIndex]);
-    } else if (clickedIndex === rightIndex) {
-      // Right clicked -> swap with center
-      setPositions([leftIndex, rightIndex, centerIndex]);
-    }
-  };
-
-  // Determine position for each galaxy
-  const getPosition = (index: number): 'left' | 'center' | 'right' => {
-    const [leftIndex, centerIndex, rightIndex] = positions;
-    if (index === leftIndex) return 'left';
-    if (index === centerIndex) return 'center';
-    if (index === rightIndex) return 'right';
-    return 'center'; // fallback
-  };
-  
-  const getIsSelected = (index: number): boolean => {
-    return positions[1] === index; // center is selected
-  };
-
   return (
     <section
       id="skills"
-      className="relative overflow-hidden py-12 md:py-16 px-6 bg-background/90 backdrop-blur-md"
+      className="relative overflow-hidden py-16 md:py-20 px-6 bg-background/90 backdrop-blur-md"
     >
-      <div className="mx-auto max-w-7xl lg:px-10">
+      <div className="mx-auto max-w-6xl">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
-                  transition={{ duration: 0.8 }}
-                  className="mb-12 md:mb-16 text-center"
-                >
-          <span className="inline-block mb-5 text-sky-600 dark:text-sky-400 tracking-[0.15em] uppercase text-xs font-semibold">
-            SKILLS & EXPERTISE
-          </span>
+          transition={{ duration: 0.8 }}
+          className="mb-12 md:mb-16 text-center"
+        >
+          <div className="inline-flex items-center gap-2 mb-5 px-4 py-2 rounded-full bg-sky-100 dark:bg-sky-900/30 border border-sky-200 dark:border-sky-800">
+            <TrendingUp className="w-4 h-4 text-sky-600 dark:text-sky-400" />
+            <span className="text-sky-600 dark:text-sky-400 tracking-wide uppercase text-xs font-semibold">
+              Skills & Expertise
+            </span>
+          </div>
           <h2
             className="text-stone-900 dark:text-stone-50 leading-[1.1]"
             style={{ fontSize: 'clamp(2.25rem, 5.5vw, 3.5rem)' }}
           >
-            Tools that{' '}
+            Tools that power{' '}
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
-              orbit
-            </span>{' '}
-            <span className="bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
               my workflow
             </span>
           </h2>
+          <p className="mt-4 text-stone-600 dark:text-stone-400 max-w-2xl mx-auto">
+            From data pipelines to user interfaces, here&apos;s my technical toolkit
+          </p>
         </motion.div>
 
-        {/* Desktop: Interactive 3-way selector container (horizontal) */}
-        <div className="hidden lg:flex relative items-center justify-center px-4 md:px-8 min-h-[500px] md:min-h-[600px] w-full max-w-6xl mx-auto overflow-hidden">
-          {skillGalaxies.map((galaxy, index) => {
-            const position = getPosition(index);
-            const isSelected = getIsSelected(index);
-
-            // Calculate horizontal position - spread them out more
-            let xPosition = 0;
-            if (position === 'left') {
-              xPosition = -380; // Move to left (more spread)
-            } else if (position === 'right') {
-              xPosition = 380; // Move to right (more spread)
-            } else {
-              xPosition = 0; // Center
-            }
-
-            return (
-              <motion.div
-                key={`${galaxy.title}-${positions.join('-')}`}
-                layout
-                initial={false}
-                animate={{
-                  x: `calc(-50% + ${xPosition}px)`,
-                  scale: isSelected ? 1 : 0.6,
-                  opacity: isSelected ? 1 : 0.35,
-                  rotate: position === 'left' ? -8 : position === 'right' ? 8 : 0,
-                  zIndex: isSelected ? 30 : position === 'left' ? 20 : 10,
-                }}
-                transition={{
-                  type: 'spring',
-                  stiffness: 280,
-                  damping: 25,
-                  mass: 0.8,
-                  duration: 0.6,
-                }}
-                className="absolute flex items-center justify-center"
-                style={{
-                  left: '50%',
-                }}
-              >
-                <SkillGalaxy
-                  title={galaxy.title}
-                  center={galaxy.center}
-                  gradient={galaxy.gradient}
-                  skills={galaxy.skills}
-                  isSelected={isSelected}
-                  onClick={() => handleSelect(index)}
-                  position={position}
-                  shouldReduceMotion={shouldReduceMotion}
-                />
-              </motion.div>
-            );
-          })}
-        </div>
-
-        {/* Mobile/Tablet: Vertical stacking */}
-        <div className="lg:hidden flex flex-col items-center gap-8 md:gap-12 w-full max-w-md mx-auto py-4">
-          {skillGalaxies.map((galaxy, index) => {
-            const isSelected = getIsSelected(index);
-            
-            return (
-              <motion.div
-                key={`${galaxy.title}-mobile-${index}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="w-full"
-              >
-                <SkillGalaxy
-                  title={galaxy.title}
-                  center={galaxy.center}
-                  gradient={galaxy.gradient}
-                  skills={galaxy.skills}
-                  isSelected={isSelected}
-                  onClick={() => handleSelect(index)}
-                  position="center"
-                  shouldReduceMotion={shouldReduceMotion}
-                />
-              </motion.div>
-            );
-          })}
+        {/* Skills Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {skillCategories.map((category, index) => (
+            <SkillCard
+              key={category.title}
+              title={category.title}
+              icon={category.icon}
+              gradient={category.gradient}
+              bgGradient={category.bgGradient}
+              skills={category.skills}
+              index={index}
+            />
+          ))}
         </div>
       </div>
     </section>
