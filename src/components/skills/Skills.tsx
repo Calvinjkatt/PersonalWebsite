@@ -10,9 +10,13 @@ function AnimatedChart() {
   return (
     <svg viewBox="0 0 200 80" className="w-full h-20" preserveAspectRatio="none">
       <defs>
-        <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="rgb(59, 130, 246)" stopOpacity="0.5" />
-          <stop offset="100%" stopColor="rgb(59, 130, 246)" stopOpacity="0" />
+        <linearGradient id="chartGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="rgb(236, 72, 153)" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="rgb(249, 115, 22)" stopOpacity="0.1" />
+        </linearGradient>
+        <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="rgb(236, 72, 153)" />
+          <stop offset="100%" stopColor="rgb(249, 115, 22)" />
         </linearGradient>
       </defs>
       {/* Area fill */}
@@ -27,7 +31,7 @@ function AnimatedChart() {
       <motion.path
         d="M 0 60 Q 30 50 50 45 T 100 35 T 150 25 T 200 15"
         fill="none"
-        stroke="rgb(59, 130, 246)"
+        stroke="url(#lineGradient)"
         strokeWidth="2.5"
         strokeLinecap="round"
         initial={{ pathLength: 0 }}
@@ -49,7 +53,7 @@ function AnimatedChart() {
           cy={point.cy}
           r="4"
           fill="white"
-          stroke="rgb(59, 130, 246)"
+          stroke="rgb(236, 72, 153)"
           strokeWidth="2"
           initial={{ scale: 0 }}
           whileInView={{ scale: 1 }}
@@ -194,17 +198,17 @@ export function Skills() {
         {/* Bento Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[minmax(140px,auto)]">
 
-          {/* Large Card - Data Science (spans 2 cols, 2 rows) */}
+          {/* Large Card - Frontend & UI (spans 2 cols, 2 rows) - Hero position */}
           <BentoCard className="col-span-2 row-span-2" delay={0}>
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="relative h-full flex flex-col">
               <div className="flex items-center gap-3 mb-4">
-                <div className="p-2.5 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 shadow-lg">
-                  <Brain className="w-5 h-5 text-white" />
+                <div className="p-2.5 rounded-xl bg-gradient-to-br from-pink-500 to-orange-500 shadow-lg">
+                  <Layout className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-stone-900 dark:text-stone-50">Data Science & ML</h3>
-                  <p className="text-xs text-stone-500 dark:text-stone-400">Building intelligent systems</p>
+                  <h3 className="text-lg font-bold text-stone-900 dark:text-stone-50">Frontend & UI</h3>
+                  <p className="text-xs text-stone-500 dark:text-stone-400">Crafting user experiences</p>
                 </div>
               </div>
 
@@ -215,8 +219,8 @@ export function Skills() {
 
               {/* Skills */}
               <div className="flex flex-wrap gap-2 mt-auto">
-                {['Python', 'NumPy', 'Pandas', 'Scikit-learn', 'LangChain', 'Gemini AI', 'Claude'].map((skill, i) => (
-                  <SkillPill key={skill} skill={skill} gradient="from-blue-500 to-cyan-500" delay={0.1 + i * 0.05} />
+                {['JavaScript', 'React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Redux', 'Figma'].map((skill, i) => (
+                  <SkillPill key={skill} skill={skill} gradient="from-pink-500 to-orange-500" delay={0.1 + i * 0.05} />
                 ))}
               </div>
             </div>
@@ -259,19 +263,19 @@ export function Skills() {
             </div>
           </BentoCard>
 
-          {/* Frontend Card (spans 2 cols) */}
+          {/* Data Science Card (spans 2 cols) */}
           <BentoCard className="col-span-2" delay={0.3}>
-            <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="relative">
               <div className="flex items-center gap-3 mb-4">
-                <div className="p-2.5 rounded-xl bg-gradient-to-br from-pink-500 to-orange-500 shadow-lg">
-                  <Layout className="w-5 h-5 text-white" />
+                <div className="p-2.5 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 shadow-lg">
+                  <Brain className="w-5 h-5 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-stone-900 dark:text-stone-50">Frontend & UI</h3>
+                <h3 className="text-lg font-bold text-stone-900 dark:text-stone-50">Data Science & ML</h3>
               </div>
               <div className="flex flex-wrap gap-2">
-                {['JavaScript', 'React', 'Next.js', 'Tailwind CSS', 'Redux', 'Figma'].map((skill, i) => (
-                  <SkillPill key={skill} skill={skill} gradient="from-pink-500 to-orange-500" delay={0.35 + i * 0.05} />
+                {['Python', 'NumPy', 'Pandas', 'Scikit-learn', 'LangChain', 'Gemini AI', 'Claude'].map((skill, i) => (
+                  <SkillPill key={skill} skill={skill} gradient="from-blue-500 to-cyan-500" delay={0.35 + i * 0.05} />
                 ))}
               </div>
             </div>
