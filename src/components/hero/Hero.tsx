@@ -23,7 +23,7 @@ const WHO_I_AM_CONTENT = {
     "I’m a Full-Stack Developer who loves building the 'brain' behind an application. My interest lies at the intersection of web development and AI—combining solid engineering principles with machine learning to automate workflows and solve hard problems. Whether I'm optimizing a database query or fine-tuning a UI in React, I focus on building software that is fast, reliable, and actually enjoyable to use",
   ],
   infoBox: [
-    { color: 'from-purple-500 to-purple-600', text: 'BSc Computer Science York University 2025' },
+    { color: 'from-purple-500 to-purple-600', text: 'BSc Computer Science York University April 2026' },
     { color: 'from-blue-500 to-blue-600', text: 'Full-Stack Developer' },
   ],
 };
@@ -286,7 +286,7 @@ export function Hero() {
                           </p>
                           {index === 0 && (
                             <p className="text-stone-600 dark:text-stone-400 text-xs mt-0.5 font-medium">
-                              2025
+                              April 2026
                             </p>
                           )}
                         </div>

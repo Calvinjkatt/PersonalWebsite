@@ -28,7 +28,7 @@ const experiences: ExperienceItem[] = [
     year: '2021',
     role: 'Honors Bachelor of Computer Science',
     company: 'York University',
-    period: 'September 2021 – August 2025›',
+    period: 'September 2021 – April 2026',
     description:
       'Pursuing Honors Bachelor of Computer Science degree with focus on Full-Stack Development, Data Engineering, and AI/ML. Building expertise in scalable systems, automation, and modern web technologies.',
     color: 'orange',
@@ -52,7 +52,7 @@ const experiences: ExperienceItem[] = [
     year: '2025',
     role: 'Full-Stack Developer',
     company: 'MidnaTech',
-    period: 'April 2025 – Present',
+    period: 'April 2025 – December 2025',
     description:
       'Built an end-to-end data platform for carrier safety analytics, handling everything from raw data ingestion to user-facing dashboards.',
     highlights: [
